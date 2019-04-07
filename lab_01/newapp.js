@@ -97,7 +97,8 @@ var Vertex2D = function(x, y) {
     this.y = parseFloat(y);
 };
 function project(M) {
-    return new Vertex2D(M.x, M.z);
+    //return new Vertex2D(M.x, M.z);
+    return new Vertex2D(M.x, M.y);
 };
 
 mainFunc = function() {
@@ -184,6 +185,7 @@ mainFunc = function() {
         // Rotation matrix coefficients
         var ct = Math.cos(theta);
         var st = Math.sin(theta);
+
         var cp = Math.cos(phi);
         var sp = Math.sin(phi);
 
@@ -191,6 +193,18 @@ mainFunc = function() {
         var x = M.x - center.x;
         var y = M.y - center.y;
         var z = M.z - center.z;
+
+        // //around y: ось, смотрит на нас
+        // M.x = cp * (x - center.x) - sp * (z - center.z) + center.x
+        // M.z = sp * (x - center.x) + cp * (z - center.z) + center.z
+
+        // // x = M.x - center.x;
+        // // y = M.y - center.y;
+        // // z = M.z - center.z;
+
+        // // //around x:
+        // // M.z = ct * (z - center.z) - st * (y - center.y) + center.z
+        // // M.y = st * (z - center.z) + ct * (y - center.y) + center.y
 
         M.x = ct * x - st * cp * y + st * sp * z + center.x;
         M.y = st * x + ct * cp * y - ct * sp * z + center.y;
