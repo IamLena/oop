@@ -62,9 +62,9 @@ var Prisma = function (center, size) {
     this.faces = [
         [this.vertices[0], this.vertices[1], this.vertices[2]],
         [this.vertices[3], this.vertices[4], this.vertices[5]],
-        [this.vertices[0], this.vertices[1], this.vertices[3], this.vertices[4]],
-        [this.vertices[1], this.vertices[2], this.vertices[4], this.vertices[5]],
-        [this.vertices[0], this.vertices[2], this.vertices[3], this.vertices[5]]
+        [this.vertices[0], this.vertices[1], this.vertices[4], this.vertices[3]],
+        [this.vertices[1], this.vertices[2], this.vertices[5], this.vertices[4]],
+        [this.vertices[0], this.vertices[2], this.vertices[5], this.vertices[3]]
     ];
 }
 
@@ -81,7 +81,7 @@ function renderModel(model, ctx, dx, dy) {
         }
         ctx.closePath();
         ctx.stroke();
-        //ctx.fill();
+        ctx.fill();
     }
 }
 
@@ -91,23 +91,23 @@ function project(M) {
     //return new Vertex2D(M.x, M.y);
 };
 
-
-
 mainFunc = function() {
-    // Fix the canvas width and height
     var canvas = document.getElementById('cnv');
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
     var dx = canvas.width / 2;
     var dy = canvas.height / 2;
+    console.log(dx, dy)
 
     // Objects style
     var ctx = canvas.getContext('2d');
     ctx.strokeStyle = "white"
+    ctx.fillStyle = 'rgba(0, 150, 255, 0.3)';
 
-    // Create the cube
+    // Create the model
     var cube_center = new Vertex(0, 0, 0);
-    var cube = new Cube(cube_center, dy);
+    var cube = new Prisma(cube_center, dy)
+    //var cube = new Cube(cube_center, dy);
     renderModel(cube, ctx, dx, dy);
 
     // Events
@@ -121,21 +121,19 @@ mainFunc = function() {
     document.addEventListener('keydown', key);
 
     function key(evt) {
-        console.log(evt)
-        if (evt.keyCode == "ArrowUp") {
+        if (evt.code == "ArrowUp") {
             zoomMinus(cube, ctx, dx, dy)
         }
-        if (evt.keyCode == "ArrowDown") {
+        if (evt.code == "ArrowDown") {
             zoomPlus(cube, ctx, dx, dy)
         }
-        if (evt.keyCode == "ArrowLeft") {
-            rotateZleft(cube, ctx)
+        if (evt.code == "ArrowLeft") {
+            rotateZleft(cube, ctx, dx, dy)
         }
-        if (evt.keyCode == "ArrowRight") {
-            rotateZright(cube, ctx)
+        if (evt.code == "ArrowRight") {
+            rotateZright(cube, ctx, dx, dy)
         }
     }
-
     function zoomMinus(model, ctx, dx, dy) {
         model.center.x *= 0.9
         model.center.y *= 0.9
@@ -147,7 +145,6 @@ mainFunc = function() {
         })
         renderModel(model, ctx, dx, dy);
     }
-
     function zoomPlus(model, ctx, dx, dy) {
         model.center.x *= 1.1
         model.center.y *= 1.1
@@ -159,8 +156,7 @@ mainFunc = function() {
         })
         renderModel(model, ctx, dx, dy);
     }
-
-    function rotateZright(model) {
+    function rotateZright(model, ctx, dx, dy) {
         center = model.center
         const alfa = -5 //degrees
         const cos = Math.cos(alfa * Math.PI/180)
@@ -173,8 +169,7 @@ mainFunc = function() {
         })
         renderModel(model, ctx, dx, dy);
     }
-
-    function rotateZleft(model) {
+    function rotateZleft(model, ctx, dx, dy) {
         center = model.center
         const alfa = 5 //degrees
         const cos = Math.cos(alfa * Math.PI/180)
@@ -187,7 +182,6 @@ mainFunc = function() {
         })
         renderModel(model, ctx, dx, dy);
     }
-
     function rotateXY(M, center, theta, phi) {
         // Rotation matrix coefficients
         var ct = Math.cos(theta);
@@ -201,30 +195,15 @@ mainFunc = function() {
         var y = M.y - center.y;
         var z = M.z - center.z;
 
-        // //around z: ось, смотрит наверх
-        // M.x = cp * (x - center.x) - sp * (z - center.z) + center.x
-        // M.z = sp * (x - center.x) + cp * (z - center.z) + center.z
-
-        // // x = M.x - center.x;
-        // // y = M.y - center.y;
-        // // z = M.z - center.z;
-
-        // // //around x:
-        // // M.z = ct * (z - center.z) - st * (y - center.y) + center.z
-        // // M.y = st * (z - center.z) + ct * (y - center.y) + center.y
-
         M.x = ct * x - st * cp * y + st * sp * z + center.x;
         M.y = st * x + ct * cp * y - ct * sp * z + center.y;
         M.z = sp * y + cp * z + center.z;
     }
-   
     function initMove(evt) {
-        console.log(evt)
         mousedown = true;
         mx = evt.clientX;
         my = evt.clientY;
     }
-
     function move(evt) {
         if (mousedown) {
             // speed of rotating
@@ -232,7 +211,7 @@ mainFunc = function() {
             var theta = (evt.clientX - mx) * Math.PI / 360;
             var phi = (evt.clientY - my) * Math.PI / 360;
 
-            for (var i = 0; i < 8; ++i) {
+            for (var i = 0, len = cube.vertices.length; i < len; ++i) {
                 rotateXY(cube.vertices[i], cube.center, theta, phi);
             }
 
@@ -243,7 +222,6 @@ mainFunc = function() {
             renderModel(cube, ctx, dx, dy);
         }
     }
-
     function stopMove() {
         mousedown = false;
     }

@@ -1,5 +1,9 @@
 canvas {
-    margin: 10px;
-    position: relative;
+    /* position: relative; */
+    top:0px;
+    left:0px;
     background-color: black;
+    margin:0;
+    padding:0; 
+    position:absolute; 
   }
