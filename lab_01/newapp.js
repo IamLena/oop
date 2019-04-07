@@ -102,12 +102,12 @@ mainFunc = function() {
     // Objects style
     var ctx = canvas.getContext('2d');
     ctx.strokeStyle = "white"
-    ctx.fillStyle = 'rgba(0, 150, 255, 0.3)';
+    ctx.fillStyle = 'rgba(0, 200, 100, 0.3)';
 
     // Create the model
     var cube_center = new Vertex(0, 0, 0);
-    var cube = new Prisma(cube_center, dy)
-    //var cube = new Cube(cube_center, dy);
+    //var cube = new Prisma(cube_center, dy)
+    var cube = new Cube(cube_center, dy);
     renderModel(cube, ctx, dx, dy);
 
     // Events
