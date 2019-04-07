@@ -3,9 +3,9 @@ var Vertex = function(x, y, z) {
     this.y=parseFloat(y);
     this.z=parseFloat(z);
 };
-var A = new Vertex(10, 20, 0.5);
 
 var Cube = function (center, size) {
+    this.center = center
     var d = size / 2;
     this.vertices = [
         new Vertex(center.x - d, center.y- d, center.z +d),
@@ -97,8 +97,8 @@ var Vertex2D = function(x, y) {
     this.y = parseFloat(y);
 };
 function project(M) {
-    //return new Vertex2D(M.x, M.z);
-    return new Vertex2D(M.x, M.y);
+    return new Vertex2D(M.x, M.z);
+    //return new Vertex2D(M.x, M.y);
 };
 
 mainFunc = function() {
@@ -142,15 +142,18 @@ mainFunc = function() {
         }
         if (evt.keyCode == 37) {
             console.log('left')
-            //rotateZLeft()
+            rotateZleft(cube)
         }
         if (evt.keyCode == 39) {
             console.log('right')
-            rotateZright(cube, cube_center)
+            rotateZright(cube)
         }
     }
 
     function zoomMinus(model, ctx, dx, dy) {
+        model.center.x *= 0.9
+        model.center.y *= 0.9
+        model.center.z *= 0.9
         model.vertices.forEach((vert) => {
             vert.x = vert.x * 0.9
             vert.y = vert.y * 0.9
@@ -160,6 +163,9 @@ mainFunc = function() {
     }
 
     function zoomPlus(model, ctx, dx, dy) {
+        model.center.x *= 1.1
+        model.center.y *= 1.1
+        model.center.z *= 1.1
         model.vertices.forEach((vert) => {
             vert.x = vert.x * 1.1
             vert.y = vert.y * 1.1
@@ -168,15 +174,30 @@ mainFunc = function() {
         renderModel(model, ctx, dx, dy);
     }
 
-    function rotateZright(model, center) {
+    function rotateZright(model) {
+        center = model.center
+        const alfa = -5 //degrees
+        const cos = Math.cos(alfa * Math.PI/180)
+        const sin = Math.sin(alfa * Math.PI/180)
+        model.vertices.forEach((vert) => {
+            let x = vert.x - center.x;
+            let z = vert.z - center.z;
+            vert.x = cos * (x - center.x) - sin * (z - center.z) + center.x
+            vert.z = sin * (x - center.x) + cos * (z - center.z) + center.z
+        })
+        renderModel(model, ctx, dx, dy);
+    }
+
+    function rotateZleft(model) {
+        center = model.center
         const alfa = 5 //degrees
         const cos = Math.cos(alfa * Math.PI/180)
         const sin = Math.sin(alfa * Math.PI/180)
         model.vertices.forEach((vert) => {
-            let x = vert.x
-            let y = vert.y
-            vert.x = cos * (x - center.x) - sin * (y - center.y) + center.x
-            vert.y = sin * (x - center.x) + cos * (y - center.y) + center.y
+            let x = vert.x - center.x;
+            let z = vert.z - center.z;
+            vert.x = cos * (x - center.x) - sin * (z - center.z) + center.x
+            vert.z = sin * (x - center.x) + cos * (z - center.z) + center.z
         })
         renderModel(model, ctx, dx, dy);
     }
@@ -194,7 +215,7 @@ mainFunc = function() {
         var y = M.y - center.y;
         var z = M.z - center.z;
 
-        // //around y: ось, смотрит на нас
+        // //around z: ось, смотрит наверх
         // M.x = cp * (x - center.x) - sp * (z - center.z) + center.x
         // M.z = sp * (x - center.x) + cp * (z - center.z) + center.z
 
@@ -225,7 +246,7 @@ mainFunc = function() {
             var phi = (evt.clientY - my) * Math.PI / 360;
 
             for (var i = 0; i < 8; ++i) {
-                rotateXY(cube.vertices[i], cube_center, theta, phi);
+                rotateXY(cube.vertices[i], cube.center, theta, phi);
             }
 
             mx = evt.clientX;
