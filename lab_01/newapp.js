@@ -43,6 +43,31 @@ var Cube = function (center, size) {
     ]
 };
 
+var Prisma = function (center, size) {
+    this.center = center
+    var d = size / 2;
+    let x = center.x
+    let y = center.y
+    let z = center.z
+    let cos = Math.cos(Math.PI / 3)
+    let sin = Math.sin(Math.PI / 3)
+    this.vertices = [
+        new Vertex(x - d, y - d, z +d),//0
+        new Vertex(x + d, y -d, z + d),//1
+        new Vertex(x, y + d, z + d),//2
+        new Vertex(x - d, y - d, z - d),//3
+        new Vertex(x + d, y -d, z - d),//4
+        new Vertex(x, y + d, z - d)//5
+    ];
+    this.faces = [
+        [this.vertices[0], this.vertices[1], this.vertices[2]],
+        [this.vertices[3], this.vertices[4], this.vertices[5]],
+        [this.vertices[0], this.vertices[1], this.vertices[3], this.vertices[4]],
+        [this.vertices[1], this.vertices[2], this.vertices[4], this.vertices[5]],
+        [this.vertices[0], this.vertices[2], this.vertices[3], this.vertices[5]]
+    ];
+}
+
 function renderModel(model, ctx, dx, dy) {
     ctx.clearRect(0, 0, 2*dx, 2*dy);
     for (var j = 0, n_faces = model.faces.length; j < n_faces; ++j) {        
@@ -60,46 +85,13 @@ function renderModel(model, ctx, dx, dy) {
     }
 }
 
-function render(objects, ctx, dx, dy) {
-    ctx.clearRect(0, 0, 2*dx, 2*dy);
-    for (var i = 0, n_obj = objects.length; i < n_obj; ++i) {
-        var face = objects[i].faces[0];
-        var P = project(face[0]);
-        ctx.beginPath();
-        ctx.moveTo(P.x + dx, -P.y + dy);
-        for (var k = 1, n_vertices = face.length; k < n_vertices; ++k) {
-            P = project(face[k]);
-            ctx.lineTo(P.x + dx, -P.y + dy);
-        }
-        ctx.closePath();
-        ctx.stroke();
-        ctx.fillStyle = 'red'
-        ctx.fill();
-
-        for (var j = 1, n_faces = objects[i].faces.length; j < n_faces; ++j) {        
-            var face = objects[i].faces[j];
-            var P = project(face[0]);
-            ctx.beginPath();
-            ctx.moveTo(P.x + dx, -P.y + dy);
-            for (var k = 1, n_vertices = face.length; k < n_vertices; ++k) {
-                P = project(face[k]);
-                ctx.lineTo(P.x + dx, -P.y + dy);
-            }
-            ctx.closePath();
-            ctx.stroke();
-            //ctx.fill();
-        }
-    }
-}
-
-var Vertex2D = function(x, y) {
-    this.x = parseFloat(x);
-    this.y = parseFloat(y);
-};
 function project(M) {
-    return new Vertex2D(M.x, M.z);
+    return {x: M.x, y: M.z}
+        // new Vertex2D(M.x, M.z);
     //return new Vertex2D(M.x, M.y);
 };
+
+
 
 mainFunc = function() {
     // Fix the canvas width and height
@@ -114,10 +106,8 @@ mainFunc = function() {
     ctx.strokeStyle = "white"
 
     // Create the cube
-    var cube_center = new Vertex(0, 11*dy/10, 0);
+    var cube_center = new Vertex(0, 0, 0);
     var cube = new Cube(cube_center, dy);
-    var objects = [cube];
-    //render(objects, ctx, dx, dy);
     renderModel(cube, ctx, dx, dy);
 
     // Events
@@ -128,25 +118,21 @@ mainFunc = function() {
     canvas.addEventListener('mousedown', initMove);
     document.addEventListener('mousemove', move);
     document.addEventListener('mouseup', stopMove);
-
     document.addEventListener('keydown', key);
 
     function key(evt) {
-        if (evt.keyCode == 38) {
-            console.log('up')
+        console.log(evt)
+        if (evt.keyCode == "ArrowUp") {
             zoomMinus(cube, ctx, dx, dy)
         }
-        if (evt.keyCode == 40) {
-            console.log('down')
+        if (evt.keyCode == "ArrowDown") {
             zoomPlus(cube, ctx, dx, dy)
         }
-        if (evt.keyCode == 37) {
-            console.log('left')
-            rotateZleft(cube)
+        if (evt.keyCode == "ArrowLeft") {
+            rotateZleft(cube, ctx)
         }
-        if (evt.keyCode == 39) {
-            console.log('right')
-            rotateZright(cube)
+        if (evt.keyCode == "ArrowRight") {
+            rotateZright(cube, ctx)
         }
     }
 
@@ -233,6 +219,7 @@ mainFunc = function() {
     }
    
     function initMove(evt) {
+        console.log(evt)
         mousedown = true;
         mx = evt.clientX;
         my = evt.clientY;
