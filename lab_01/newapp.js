@@ -81,19 +81,21 @@ function renderModel(model, ctx, dx, dy) {
         }
         ctx.closePath();
         ctx.stroke();
-        ctx.fill();
+        //ctx.fill();
     }
 }
 
 function project(M) {
     return {x: M.x, y: M.z}
+    //return {x: M.x, y: M.y}
         // new Vertex2D(M.x, M.z);
     //return new Vertex2D(M.x, M.y);
 };
 
 mainFunc = function() {
     var canvas = document.getElementById('cnv');
-    canvas.width = window.innerWidth;
+    console.log(`w = ${window.innerWidth }`)
+    canvas.width = window.innerWidth * 0.75;
     canvas.height = window.innerHeight;
     var dx = canvas.width / 2;
     var dy = canvas.height / 2;
@@ -105,10 +107,9 @@ mainFunc = function() {
     ctx.fillStyle = 'rgba(0, 200, 100, 0.3)';
 
     // Create the model
-    var cube_center = new Vertex(0, 0, 0);
-    //var cube = new Prisma(cube_center, dy)
-    var cube = new Cube(cube_center, dy);
-    renderModel(cube, ctx, dx, dy);
+    var model_center = new Vertex(0, 0, 0);
+    var model = new Cube(model_center, dy);
+    renderModel(model, ctx, dx, dy);
 
     // Events
     var mousedown = false;
@@ -119,19 +120,41 @@ mainFunc = function() {
     document.addEventListener('mousemove', move);
     document.addEventListener('mouseup', stopMove);
     document.addEventListener('keydown', key);
+    document.querySelector('#cube').addEventListener('click', createCube);
+    document.querySelector('#tr-prism').addEventListener('click', createPrism);
+    
+    function createCube(evt) {
+        console.log('cube clicked')
+        model_center = new Vertex(0, 0, 0);
+        model = new Cube(model_center, dy)
+        renderModel(model, ctx, dx, dy);
+        mousedown = false;
+        mx = 0;
+        my = 0;
+    }
+
+    function createPrism(evt) {
+        console.log('cube clicked')
+        model_center = new Vertex(0, 0, 0);
+        model = new Prisma(model_center, dy)
+        renderModel(model, ctx, dx, dy);
+        mousedown = false;
+        mx = 0;
+        my = 0;
+    }
 
     function key(evt) {
         if (evt.code == "ArrowUp") {
-            zoomMinus(cube, ctx, dx, dy)
+            zoomMinus(model, ctx, dx, dy)
         }
         if (evt.code == "ArrowDown") {
-            zoomPlus(cube, ctx, dx, dy)
+            zoomPlus(model, ctx, dx, dy)
         }
         if (evt.code == "ArrowLeft") {
-            rotateZleft(cube, ctx, dx, dy)
+            rotateYleft(model, ctx, dx, dy)
         }
         if (evt.code == "ArrowRight") {
-            rotateZright(cube, ctx, dx, dy)
+            rotateYright(model, ctx, dx, dy)
         }
     }
     function zoomMinus(model, ctx, dx, dy) {
@@ -156,7 +179,7 @@ mainFunc = function() {
         })
         renderModel(model, ctx, dx, dy);
     }
-    function rotateZright(model, ctx, dx, dy) {
+    function rotateYright(model, ctx, dx, dy) {
         center = model.center
         const alfa = -5 //degrees
         const cos = Math.cos(alfa * Math.PI/180)
@@ -169,7 +192,7 @@ mainFunc = function() {
         })
         renderModel(model, ctx, dx, dy);
     }
-    function rotateZleft(model, ctx, dx, dy) {
+    function rotateYleft(model, ctx, dx, dy) {
         center = model.center
         const alfa = 5 //degrees
         const cos = Math.cos(alfa * Math.PI/180)
@@ -182,7 +205,7 @@ mainFunc = function() {
         })
         renderModel(model, ctx, dx, dy);
     }
-    function rotateXY(M, center, theta, phi) {
+    function rotateX(M, center, theta, phi) {
         // Rotation matrix coefficients
         var ct = Math.cos(theta);
         var st = Math.sin(theta);
@@ -211,15 +234,15 @@ mainFunc = function() {
             var theta = (evt.clientX - mx) * Math.PI / 360;
             var phi = (evt.clientY - my) * Math.PI / 360;
 
-            for (var i = 0, len = cube.vertices.length; i < len; ++i) {
-                rotateXY(cube.vertices[i], cube.center, theta, phi);
+            for (var i = 0, len = model.vertices.length; i < len; ++i) {
+                rotateX(model.vertices[i], model.center, theta, phi);
             }
 
             mx = evt.clientX;
             my = evt.clientY;
 
             //render(objects, ctx, dx, dy);
-            renderModel(cube, ctx, dx, dy);
+            renderModel(model, ctx, dx, dy);
         }
     }
     function stopMove() {
