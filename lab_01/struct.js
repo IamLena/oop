@@ -27,11 +27,11 @@ document.addEventListener('keydown', (e) => {
 });
 //createCube
 document.querySelector('#cube').addEventListener('click', (e) => {
-    mainFunc()
+    mainFunc('new model', ['cube'])
 });
 //createPrism
 document.querySelector('#tr-prism').addEventListener('click', (e) => {
-    mainFunc()
+    mainFunc('new model', ['prism'])
 });
 const file = document.querySelector('#my-file')
 console.log(file.onchange)

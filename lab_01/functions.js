@@ -129,6 +129,16 @@ function mainFunc(command, argumentsArray) {
         model = argumentsArray[0]
         renderModel(model, ctx, dy, dx)
     }
+    else if (command === 'new model') {
+        model_center = new Vertex(0, 0, 0);
+        if (argumentsArray[0] === 'cube') {
+            model = new Cube(model_center, dy)
+        }
+        else if (argumentsArray[0] === 'prism') {
+            model = new Prisma(model_center, dy)
+        }
+        renderModel(model, ctx, dx, dy)
+    }
     else {
         renderModel(model, ctx, dx, dy)
     }
