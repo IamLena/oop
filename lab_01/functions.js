@@ -73,7 +73,7 @@ function renderModel(model, ctx, dx, dy) {
         }
         ctx.closePath();
         ctx.stroke();
-        //ctx.fill();
+        ctx.fill();
     }
 }
 
@@ -126,6 +126,7 @@ function mainFunc(command, argumentsArray) {
     }
     else if(command === 'file') {
         console.log('main')
+        model_center = new Vertex(0, 0, 0);
         model = argumentsArray[0]
         renderModel(model, ctx, dy, dx)
     }
@@ -144,7 +145,7 @@ function mainFunc(command, argumentsArray) {
     }
 }
 
-function rotateXZ(model, center, theta, phi) {
+function rotateXZ(dot, center, theta, phi) {
     // Rotation matrix coefficients
     var ct = Math.cos(theta);
     var st = Math.sin(theta);
@@ -153,13 +154,13 @@ function rotateXZ(model, center, theta, phi) {
     var sp = Math.sin(phi);
 
     // Rotation
-    var x = model.x - center.x;
-    var y = model.y - center.y;
-    var z = model.z - center.z;
+    var x = dot.x - center.x;
+    var y = dot.y - center.y;
+    var z = dot.z - center.z;
 
-    model.x = ct * x - st * cp * y + st * sp * z + center.x;
-    model.y = st * x + ct * cp * y - ct * sp * z + center.y;
-    model.z = sp * y + cp * z + center.z;
+    dot.x = ct * x - st * cp * y + st * sp * z + center.x;
+    dot.y = st * x + ct * cp * y - ct * sp * z + center.y;
+    dot.z = sp * y + cp * z + center.z;
 }
 function zoomMinus(model, ctx, dx, dy) {
     model.center.x *= 0.9
@@ -246,7 +247,8 @@ function parseFileData(text) {
         sumz += item.z
     })
     let len = vertices.length
-    center = new Vertex(sumx/len, sumy/len, sumz/len)
+    //center = new Vertex(sumx/len, sumy/len, sumz/len)
+    center = new Vertex(0, 0, 0)
 
     let faces = []
     let facData = blocks[1].split('\n')
