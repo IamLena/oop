@@ -88,21 +88,18 @@ let model = new Cube(model_center, dy)
 let mousedown = false
 let mx, my
 
-//initMove
 canvas.addEventListener('mousedown', (e) => {
     mainFunc('initMove', [e.clientX, e.clientY])
 });
-//move
 document.addEventListener('mousemove', (e) => {
     mainFunc('move', [e.clientX, e.clientY])
 });
-//stopMove
 document.addEventListener('mouseup', (e) => {
     mainFunc('stopMove')
 });
 //key
 document.addEventListener('keydown', (e) => {
-    mainFunc()
+    mainFunc('key', [e.code])
 });
 //createCube
 document.querySelector('#cube').addEventListener('click', (e) => {
@@ -142,9 +139,21 @@ function mainFunc(command, argumentsArray) {
     else if (command === 'stopMove') {
         mousedown = false;
     }
-    //else if (command === '')
+    else if (command === 'key') {
+        if (argumentsArray[0] == "ArrowUp") {
+            zoomMinus(model, ctx, dx, dy)
+        }
+        if (argumentsArray[0] == "ArrowDown") {
+            zoomPlus(model, ctx, dx, dy)
+        }
+        if (argumentsArray[0] == "ArrowLeft") {
+            rotateYleft(model, ctx, dx, dy)
+        }
+        if (argumentsArray[0] == "ArrowRight") {
+            rotateYright(model, ctx, dx, dy)
+        }
+    }
     else {
-        // commad === undefined
         renderModel(model, ctx, dx, dy)
     }
 }
@@ -165,6 +174,54 @@ function rotateXZ(model, center, theta, phi) {
     model.x = ct * x - st * cp * y + st * sp * z + center.x;
     model.y = st * x + ct * cp * y - ct * sp * z + center.y;
     model.z = sp * y + cp * z + center.z;
+}
+function zoomMinus(model, ctx, dx, dy) {
+    model.center.x *= 0.9
+    model.center.y *= 0.9
+    model.center.z *= 0.9
+    model.vertices.forEach((vert) => {
+        vert.x = vert.x * 0.9
+        vert.y = vert.y * 0.9
+        vert.z = vert.z * 0.9
+    })
+    renderModel(model, ctx, dx, dy);
+}
+function zoomPlus(model, ctx, dx, dy) {
+    model.center.x *= 1.1
+    model.center.y *= 1.1
+    model.center.z *= 1.1
+    model.vertices.forEach((vert) => {
+        vert.x = vert.x * 1.1
+        vert.y = vert.y * 1.1
+        vert.z = vert.z * 1.1
+    })
+    renderModel(model, ctx, dx, dy);
+}
+function rotateYright(model, ctx, dx, dy) {
+    center = model.center
+    const alfa = -5 //degrees
+    const cos = Math.cos(alfa * Math.PI/180)
+    const sin = Math.sin(alfa * Math.PI/180)
+    model.vertices.forEach((vert) => {
+        let x = vert.x - center.x;
+        let z = vert.z - center.z;
+        vert.x = cos * (x - center.x) - sin * (z - center.z) + center.x
+        vert.z = sin * (x - center.x) + cos * (z - center.z) + center.z
+    })
+    renderModel(model, ctx, dx, dy);
+}
+function rotateYleft(model, ctx, dx, dy) {
+    center = model.center
+    const alfa = 5 //degrees
+    const cos = Math.cos(alfa * Math.PI/180)
+    const sin = Math.sin(alfa * Math.PI/180)
+    model.vertices.forEach((vert) => {
+        let x = vert.x - center.x;
+        let z = vert.z - center.z;
+        vert.x = cos * (x - center.x) - sin * (z - center.z) + center.x
+        vert.z = sin * (x - center.x) + cos * (z - center.z) + center.z
+    })
+    renderModel(model, ctx, dx, dy);
 }
 
 mainFunc()
