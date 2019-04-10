@@ -12,7 +12,7 @@
             <button id='cube'>cube</button>
             <button id='tr-prism'>triangular prism</button>
             <div class="input-file-container">  
-                <input class="input-file" id="my-file" type="file" onchange="mainFunc('file', [event.target.files[0]])">
+                <input class="input-file" id="my-file" type="file" onchange="parseFile(event.target.files[0])">
                 <!-- onchange="handleFile(event)"> -->
                 <label class="input-file-trigger">upload a model</label>
             </div>

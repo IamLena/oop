@@ -54,6 +54,12 @@ var Prisma = function (center, size) {
     ];
 }
 
+var SomeModel = function (center, vertices, faces) {
+    this.center = center
+    this.vertices = vertices
+    this.faces = faces
+}
+
 function renderModel(model, ctx, dx, dy) {
     ctx.clearRect(0, 0, 2*dx, 2*dy);
     for (var j = 0, n_faces = model.faces.length; j < n_faces; ++j) {        
@@ -119,8 +125,8 @@ function mainFunc(command, argumentsArray) {
         }
     }
     else if(command === 'file') {
-        console.log('uploading')
-        let fileContent = parseFile(argumentsArray[0])
+        console.log('main')
+        model = argumentsArray[0]
         renderModel(model, ctx, dy, dx)
     }
     else {
@@ -200,9 +206,11 @@ function parseFile(file) {
             const reader = new FileReader()
             reader.readAsText(file)
             reader.onloadend = () => {
+                console.log('hey')
                 const allText = reader.result
                 console.log(allText);
-                parseFileData(allText);
+                let model = parseFileData(allText);
+                mainFunc('file', [model])
             }
         } else {
             alert('filereader is not supported')
@@ -213,13 +221,11 @@ function parseFile(file) {
 function parseFileData(text) {
     let blocks = text.split('\nfaces\n')
     let vertices = []
-    let vetData = blocks[0].split('\n').slice(1).forEach((line) => {
+    blocks[0].split('\n').slice(1).forEach((line) => {
         line = line.split(', ')
-        console.log(line)
         let vert = new Vertex(line[0], line[1], line[2])
         vertices.push(vert)
     })
-    console.log(vertices)
 
     let sumx = 0
     let sumy = 0
@@ -235,19 +241,17 @@ function parseFileData(text) {
     let faces = []
     let facData = blocks[1].split('\n')
     facData.pop()
-    console.log(facData)
-    ///not workin here
-    console.log(facData.length)
     for (let i = 0; i < facData.length; i++) {
         let face = []
         let line = facData[i].split(', ')
         line.forEach((item, index, array) => {array[index] = parseInt(item)})
-        console.log(line)
-        for (i = 0; i < line.length; i++) {
-            face.push(line[i])
+        for (j = 0; j < line.length; j++) {
+            face.push(vertices[line[j]])
         }
         faces.push(face)
     }
-    console.log(faces)
 
+    let model = new SomeModel(center, vertices, faces)
+    console.log(model)
+    return model
 }
