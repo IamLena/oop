@@ -24,5 +24,34 @@ button {
   margin: 5%;
   height: 10%;
   background-color: #8080ff;
-  font-size: 20pt;
+  font-size: 4vmin;
+  border: none;
+  cursor: pointer;
+}
+
+.input-file-container {
+  width: 90%;
+  margin: 5%;
+  height: 10%;
+  background-color: #8080ff;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.input-file-trigger {
+  text-align: center;
+  padding: 5%;
+  display: block;
+  color:black;
+  font-size: 4vmin;
+  /* transition: all .4s; */
+  cursor: pointer;
+}
+
+.input-file {
+  width: 100%;
+  left: 0;
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
 }
