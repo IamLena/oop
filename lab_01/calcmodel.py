@@ -3,7 +3,7 @@ from math import cos, sin, pi
 center = [0, 0, 0]
 radius = 150
 d = radius
-n = 7
+n = 20
 
 xc = center[0]
 yc = center[1]
@@ -104,7 +104,7 @@ def getSandClock(h):
     vertices.append('{:f}, {:f}, {:f}'.format(0, 0, zc + d))
 
 
-def getSphere(h):
+def getSadClockCross(h):
     vertices.append('{:f}, {:f}, {:f}'.format(0, 0, zc + d))
     
     j = 0
@@ -121,7 +121,38 @@ def getSphere(h):
         j += 1
     vertices.append('{:f}, {:f}, {:f}'.format(0, 0, zc - d))
 
-getSphere(30)
+def getSphere(h):
+    vertices.append('{:f}, {:f}, {:f}'.format(0, 0, zc + d))
+    
+    j = 0
+    for r in range(10, d, h):
+        print(r)
+        for i in range (n):
+            vertices.append('{:f}, {:f}, {:f}'.format(calcX(i, r), calcY(i, r), zc + d - r))
+        
+        face = ''
+        for i in range (1, n):
+            face += '{:d}, '.format(i + j * n)
+        face += '{:d}'.format(n + j * n)
+        faces.append(face)
+        j += 1
+
+    for r in range(d, 10, -h):
+        print(r)
+        for i in range (n):
+            vertices.append('{:f}, {:f}, {:f}'.format(calcX(i, r), calcY(i, r), zc - d + r))
+        
+        face = ''
+        for i in range (1, n):
+            face += '{:d}, '.format(i + j * n)
+        face += '{:d}'.format(n + j * n)
+        faces.append(face)
+        j += 1
+
+    vertices.append('{:f}, {:f}, {:f}'.format(0, 0, zc - d))
+
+
+getSphere(10)
 # getPrism(1)
 # getPiramid()
 
