@@ -87,9 +87,6 @@ function renderModel(model, ctx, dx, dy) {
 
 function project(M) {
     return {x: M.x, y: M.z}
-    //return {x: M.x, y: M.y}
-        // new Vertex2D(M.x, M.z);
-    //return new Vertex2D(M.x, M.y);
 };
 
 mainFunc = function() {
@@ -132,7 +129,6 @@ mainFunc = function() {
         mx = 0;
         my = 0;
     }
-
     function createPrism(evt) {
         console.log('cube clicked')
         model_center = new Vertex(0, 0, 0);
@@ -142,7 +138,6 @@ mainFunc = function() {
         mx = 0;
         my = 0;
     }
-
     function key(evt) {
         if (evt.code == "ArrowUp") {
             zoomMinus(model, ctx, dx, dy)
@@ -205,7 +200,7 @@ mainFunc = function() {
         })
         renderModel(model, ctx, dx, dy);
     }
-    function rotateX(M, center, theta, phi) {
+    function rotateXZ(M, center, theta, phi) {
         // Rotation matrix coefficients
         var ct = Math.cos(theta);
         var st = Math.sin(theta);
@@ -235,7 +230,7 @@ mainFunc = function() {
             var phi = (evt.clientY - my) * Math.PI / 360;
 
             for (var i = 0, len = model.vertices.length; i < len; ++i) {
-                rotateX(model.vertices[i], model.center, theta, phi);
+                rotateXZ(model.vertices[i], model.center, theta, phi);
             }
 
             mx = evt.clientX;
