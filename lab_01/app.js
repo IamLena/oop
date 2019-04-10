@@ -1,4 +1,4 @@
-const mainProcess = (e) => {
+function handelFile(e) {
     const file = e.target.files[0]
     if (file) {
         //document.querySelector('#file-label').textContent = `${file.name}`
