@@ -1,9 +1,7 @@
 var Vertex = function(x, y, z) {
-    console.log(x, y, z)
     this.x=parseFloat(x);
     this.y=parseFloat(y);
     this.z=parseFloat(z);
-    console.log(this.x, this.y, this.z)
 };
 
 var Cube = function (center, size) {
@@ -125,7 +123,6 @@ function mainFunc(command, argumentsArray) {
         }
     }
     else if(command === 'file') {
-        console.log('main')
         model_center = new Vertex(0, 0, 0);
         model = argumentsArray[0]
         renderModel(model, ctx, dy, dx)
@@ -217,9 +214,7 @@ function parseFile(file) {
             const reader = new FileReader()
             reader.readAsText(file)
             reader.onloadend = () => {
-                console.log('hey')
                 const allText = reader.result
-                console.log(allText);
                 let model = parseFileData(allText);
                 mainFunc('file', [model])
             }
@@ -264,6 +259,5 @@ function parseFileData(text) {
     }
 
     let model = new SomeModel(center, vertices, faces)
-    console.log(model)
     return model
 }
