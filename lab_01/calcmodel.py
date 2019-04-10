@@ -1,7 +1,7 @@
 from math import cos, sin, pi
 
 center = [0, 0, 0]
-radius = 150
+radius = 250
 d = radius
 n = 20
 
@@ -149,10 +149,28 @@ def getSphere(h):
         faces.append(face)
         j += 1
 
+
     vertices.append('{:f}, {:f}, {:f}'.format(0, 0, zc - d))
+    lastIndex = len(vertices) - 1
+    for i in range (1, n / 2 + 1):
+        face = '{:d}, '.format(0)
+        for j in range (2 * d / h - 1):
+            face += '{:d}, '.format(i + j * n)
+
+        face += '{:d}, '.format(lastIndex)
+
+        for j in range (2 * d / h - 2):
+            face += '{:d}, '.format(i + (2 * d / h - 2) * n + n/2 - j * n)
+
+        face += '{:d}'.format(i + (2 * d / h - 2) * n + n/2 - (2 * d / h - 2) * n)
+
+        faces.append(face)
+        j += 1
+
+    
 
 
-getSphere(10)
+getSphere(30)
 # getPrism(1)
 # getPiramid()
 
