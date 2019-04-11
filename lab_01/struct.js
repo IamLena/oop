@@ -33,6 +33,9 @@ document.querySelector('#cube').addEventListener('click', (e) => {
 document.querySelector('#tr-prism').addEventListener('click', (e) => {
     mainFunc('new model', ['prism'])
 });
+document.querySelector('#piramid').addEventListener('click', (e) => {
+    mainFunc('new model', ['piramid'])
+});
 const file = document.querySelector('#my-file')
 console.log(file.onchange)
 

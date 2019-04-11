@@ -52,6 +52,35 @@ var Prisma = function (center, size) {
     ];
 }
 
+function calcX(xc, index, radius, n) {
+    return xc + radius * Math.cos(2 * Math.PI * index / n)
+}
+function calcY(yc, index, radius, n) {
+    return yc + radius * Math.sin(2 * Math.PI * index / n)
+}
+
+var Piramid = function(center, size) {
+    this.center = center
+    let d = size / 2
+    let n = 6
+    this.vertices = [new Vertex(0, 0, this.center.z - d)]
+
+    for (let i = 0; i < 6; i++) {
+        let vert = new Vertex(calcX(this.center.x, i, d, n), calcY(this.center.y, i, d, n), this.center.z + d)
+        this.vertices.push(vert)
+    }
+
+    this.faces = [
+        [this.vertices[1], this.vertices[2], this.vertices[3], this.vertices[4], this.vertices[5], this.vertices[6]],
+        [this.vertices[0], this.vertices[1], this.vertices[2]],
+        [this.vertices[0], this.vertices[2], this.vertices[3]],
+        [this.vertices[0], this.vertices[3], this.vertices[4]],
+        [this.vertices[0], this.vertices[4], this.vertices[5]],
+        [this.vertices[0], this.vertices[5], this.vertices[6]],
+        [this.vertices[0], this.vertices[6], this.vertices[1]],
+    ]
+}
+
 var SomeModel = function (center, vertices, faces) {
     this.center = center
     this.vertices = vertices
@@ -134,6 +163,10 @@ function mainFunc(command, argumentsArray) {
         }
         else if (argumentsArray[0] === 'prism') {
             model = new Prisma(model_center, dy)
+        }
+        else if (argumentsArray[0] === 'piramid') {
+            model = new Piramid(model_center, dy)
+            console.log(model.vertices)
         }
         renderModel(model, ctx, dx, dy)
     }
