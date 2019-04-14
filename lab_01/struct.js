@@ -1,8 +1,8 @@
-var canvas = document.getElementById('cnv');
+const canvas = document.getElementById('cnv');
 canvas.width = window.innerWidth * 0.75;
 canvas.height = window.innerHeight;
-var dx = canvas.width / 2;
-var dy = canvas.height / 2;
+const dx = canvas.width / 2;
+const dy = canvas.height / 2;
 const ctx = canvas.getContext('2d')
 
 ctx.strokeStyle = "white"
@@ -36,7 +36,5 @@ document.querySelector('#tr-prism').addEventListener('click', (e) => {
 document.querySelector('#piramid').addEventListener('click', (e) => {
     mainFunc('new model', ['piramid'])
 });
-const file = document.querySelector('#my-file')
-console.log(file.onchange)
 
 mainFunc()

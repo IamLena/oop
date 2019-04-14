@@ -6,13 +6,13 @@ var Vertex = function(x, y, z) {
 
 var Cube = function (center, size) {
     this.center = center
-    var d = size / 2;
+    const d = size / 2;
     this.vertices = [
-        new Vertex(center.x - d, center.y- d, center.z +d),
-        new Vertex(center.x -d, center.y -d, center.z -d),
-        new Vertex(center.x + d, center.y -d, center.z -d),
-        new Vertex(center.x + d, center.y -d, center.z +d),
-        new Vertex(center.x + d, center.y + d, center.z+ d),
+        new Vertex(center.x - d, center.y - d, center.z + d),
+        new Vertex(center.x - d, center.y - d, center.z - d),
+        new Vertex(center.x + d, center.y - d, center.z - d),
+        new Vertex(center.x + d, center.y - d, center.z + d),
+        new Vertex(center.x + d, center.y + d, center.z + d),
         new Vertex(center.x + d, center.y + d, center.z - d),
         new Vertex(center.x - d, center.y + d, center.z - d),
         new Vertex(center.x - d, center.y + d, center.z + d)
@@ -29,18 +29,16 @@ var Cube = function (center, size) {
 
 var Prisma = function (center, size) {
     this.center = center
-    var d = size / 2;
+    const d = size / 2;
     let x = center.x
     let y = center.y
     let z = center.z
-    let cos = Math.cos(Math.PI / 3)
-    let sin = Math.sin(Math.PI / 3)
     this.vertices = [
         new Vertex(x - d, y - d, z +d),//0
-        new Vertex(x + d, y -d, z + d),//1
+        new Vertex(x + d, y - d, z + d),//1
         new Vertex(x, y + d, z + d),//2
         new Vertex(x - d, y - d, z - d),//3
-        new Vertex(x + d, y -d, z - d),//4
+        new Vertex(x + d, y - d, z - d),//4
         new Vertex(x, y + d, z - d)//5
     ];
     this.faces = [
@@ -61,12 +59,12 @@ function calcY(yc, index, radius, n) {
 
 var Piramid = function(center, size) {
     this.center = center
-    let d = size / 2
-    let n = 6
-    this.vertices = [new Vertex(0, 0, this.center.z - d)]
+    const d = size / 2
+    const n = 6
+    this.vertices = [new Vertex(0, 0, this.center.z + d)]
 
     for (let i = 0; i < 6; i++) {
-        let vert = new Vertex(calcX(this.center.x, i, d, n), calcY(this.center.y, i, d, n), this.center.z + d)
+        let vert = new Vertex(calcX(this.center.x, i, d, n), calcY(this.center.y, i, d, n), this.center.z - d)
         this.vertices.push(vert)
     }
 
@@ -90,11 +88,11 @@ var SomeModel = function (center, vertices, faces) {
 function renderModel(model, ctx, dx, dy) {
     ctx.clearRect(0, 0, 2*dx, 2*dy);
     for (var j = 0, n_faces = model.faces.length; j < n_faces; ++j) {        
-        var face = model.faces[j];
-        var P = project(face[0]);
+        let face = model.faces[j];
+        let P = project(face[0]);
         ctx.beginPath();
         ctx.moveTo(P.x + dx, -P.y + dy);
-        for (var k = 1, n_vertices = face.length; k < n_vertices; ++k) {
+        for (let k = 1, n_vertices = face.length; k < n_vertices; ++k) {
             P = project(face[k]);
             ctx.lineTo(P.x + dx, -P.y + dy);
         }
@@ -104,8 +102,8 @@ function renderModel(model, ctx, dx, dy) {
     }
 }
 
-function project(M) {
-    return {x: M.x, y: M.z}
+function project(dot) {
+    return {x: dot.x, y: dot.z}
 };
 
 function mainFunc(command, argumentsArray) {
@@ -166,7 +164,6 @@ function mainFunc(command, argumentsArray) {
         }
         else if (argumentsArray[0] === 'piramid') {
             model = new Piramid(model_center, dy)
-            console.log(model.vertices)
         }
         renderModel(model, ctx, dx, dy)
     }
@@ -258,7 +255,7 @@ function parseFile(file) {
 }
 
 function parseFileData(text) {
-    let blocks = text.split('\nfaces\n')
+    let blocks = text.split('\nfaces\n')//block 1 - vertices, block 2 - faces
     let vertices = []
     blocks[0].split('\n').slice(1).forEach((line) => {
         line = line.split(', ')
@@ -266,16 +263,6 @@ function parseFileData(text) {
         vertices.push(vert)
     })
 
-    let sumx = 0
-    let sumy = 0
-    let sumz = 0
-    vertices.forEach((item) => {
-        sumx += item.x
-        sumy += item.y
-        sumz += item.z
-    })
-    let len = vertices.length
-    //center = new Vertex(sumx/len, sumy/len, sumz/len)
     center = new Vertex(0, 0, 0)
 
     let faces = []
