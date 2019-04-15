@@ -27,13 +27,16 @@ document.addEventListener('keydown', (e) => {
 });
 //createCube
 document.querySelector('#cube').addEventListener('click', (e) => {
+    document.querySelector('.input-file-trigger').textContent = `upload a model`
     mainFunc('new model', ['cube'])
 });
 //createPrism
 document.querySelector('#tr-prism').addEventListener('click', (e) => {
+    document.querySelector('.input-file-trigger').textContent = `upload a model`
     mainFunc('new model', ['prism'])
 });
 document.querySelector('#piramid').addEventListener('click', (e) => {
+    document.querySelector('.input-file-trigger').textContent = `upload a model`
     mainFunc('new model', ['piramid'])
 });
 

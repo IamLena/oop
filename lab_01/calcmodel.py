@@ -169,8 +169,8 @@ def getSphere(h):
 
     
 
-getSadClockCross(10)
-#getSphere(30)
+#getSadClockCross(10)
+getSphere(30)
 # getPrism(1)
 # getPiramid()
 

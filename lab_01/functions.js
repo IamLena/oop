@@ -98,7 +98,7 @@ function renderModel(model, ctx, dx, dy) {
         }
         ctx.closePath();
         ctx.stroke();
-        ctx.fill();
+        //ctx.fill();
     }
 }
 
@@ -237,7 +237,8 @@ function rotateYleft(model, ctx, dx, dy) {
     })
     renderModel(model, ctx, dx, dy);
 }
-function parseFile(file) {
+function parseFile(event) {
+    const file = event.target.files[0]
     if (file) {
         document.querySelector('.input-file-trigger').textContent = `${file.name}`
         if (window.FileReader) {
@@ -247,6 +248,7 @@ function parseFile(file) {
                 const allText = reader.result
                 let model = parseFileData(allText);
                 mainFunc('file', [model])
+                event.target.value = ""
             }
         } else {
             alert('filereader is not supported')
