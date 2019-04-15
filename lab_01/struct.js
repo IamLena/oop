@@ -6,7 +6,7 @@ const dy = canvas.height / 2;
 const ctx = canvas.getContext('2d')
 
 ctx.strokeStyle = "white"
-ctx.fillStyle = 'rgba(227, 104, 255, 0.3)';
+//ctx.fillStyle = 'rgba(227, 104, 255, 0.3)';
 
 let model_center = new Vertex(0, 0, 0)
 let model = new Cube(model_center, dy)
