@@ -25,6 +25,7 @@ document.addEventListener('mouseup', (e) => {
 document.addEventListener('keydown', (e) => {
     mainFunc('key', [e.code])
 });
+
 //createCube
 document.querySelector('#cube').addEventListener('click', (e) => {
     document.querySelector('.input-file-trigger').textContent = `upload a model`
@@ -35,6 +36,7 @@ document.querySelector('#tr-prism').addEventListener('click', (e) => {
     document.querySelector('.input-file-trigger').textContent = `upload a model`
     mainFunc('new model', ['prism'])
 });
+//create piramid
 document.querySelector('#piramid').addEventListener('click', (e) => {
     document.querySelector('.input-file-trigger').textContent = `upload a model`
     mainFunc('new model', ['piramid'])

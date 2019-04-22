@@ -114,12 +114,9 @@ function mainFunc(command, argumentsArray) {
     }
     else if (command === 'move') {
         if (mousedown) {
-            //mouse coordinates
             x = argumentsArray[0]
             y = argumentsArray[1]
 
-            // speed of rotating
-            // connection between angle and movement of the mouse
             const theta = (x - mx) * Math.PI / 360;
             const phi = (y - my) * Math.PI / 360;
 
