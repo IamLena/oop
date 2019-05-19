@@ -37,18 +37,18 @@ def getPrism(h):
     faces.append(face)
 
     # X h-cross
-    # for i in range (n):
-    #     if (i == n - 1):
-    #         faces.append('{:d}, {:d}, {:d}, {:d}'.format(i, 0, n + i , n))
-    #     else:
-    #         faces.append('{:d}, {:d}, {:d}, {:d}'.format(i, i + h, n + i , n + i + h))
-
-    # h-next
     for i in range (n):
         if (i == n - 1):
-            faces.append('{:d}, {:d}, {:d}, {:d}'.format(i, 0, n, n + i))
+            faces.append('{:d}, {:d}, {:d}, {:d}'.format(i, 0, n + i , n))
         else:
-            faces.append('{:d}, {:d}, {:d}, {:d}'.format(i, i + h, n + i + h, n + i))
+            faces.append('{:d}, {:d}, {:d}, {:d}'.format(i, i + h, n + i , n + i + h))
+
+    # h-next
+    # for i in range (n):
+    #     if (i == n - 1):
+    #         faces.append('{:d}, {:d}, {:d}, {:d}'.format(i, 0, n, n + i))
+    #     else:
+    #         faces.append('{:d}, {:d}, {:d}, {:d}'.format(i, i + h, n + i + h, n + i))
 
 def getPiramid() :
     vertices.append('{:f}, {:f}, {:f}'.format(0, 0, zc - d))
@@ -169,9 +169,9 @@ def getSphere(h):
 
     
 
-#getSadClockCross(10)
-getSphere(30)
-# getPrism(1)
+#getSadClockCross(20)
+#getSphere(30)
+getPrism(2)
 # getPiramid()
 
 facLength = len(faces)
