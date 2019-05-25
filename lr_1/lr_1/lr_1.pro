@@ -26,20 +26,17 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    fileform.cpp \
     mainprocess.cpp \
     functions.cpp
 
 HEADERS += \
         mainwindow.h \
-    fileform.h \
     mainprocess.h \
     functions.h \
     errors.h
 
 FORMS += \
-        mainwindow.ui \
-    fileform.ui
+        mainwindow.ui
 
 DISTFILES += \
     data.txt
