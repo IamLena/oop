@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "myArray.h"
+#include "myArray_imp.h"
 
 #define LOG(X) std::cout << X << std::endl
 int main()
@@ -11,7 +12,6 @@ int main()
 	LOG(ar.size());
 	LOG(ar.capacity());
 
-	ar.fillZeros();
 	ar.fillRange(3, 8, 2);
 	ar.append(3);
 	ar.append(0);
@@ -22,7 +22,7 @@ int main()
 	//ar.print();
 	std::shared_ptr<Array<int>> ar2 = ar.copy();
 	ar2->print();
-	ar2 = ar.sortCopy();
+	ar2 = ar.sortCopyUp();
 	ar2->print();
 
 
