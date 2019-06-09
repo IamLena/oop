@@ -2,32 +2,58 @@
 //
 
 #include <iostream>
-#include "myArray.h"
 #include "myArray_imp.h"
+#include "set_imp.h"
 
 #define LOG(X) std::cout << X << std::endl
+#define LINE std::cout << "-----------------------------" << std::endl
+
 int main()
 {
-	Array<int> ar;
-	LOG(ar.size());
-	LOG(ar.capacity());
+	Set<int> s0 { 3, 7, 1, 0 };
+	s0.sortThisDown();
+	s0.print();
+	LINE;
+	Set<char> set0;
+	set0.print_len();
+	set0.print_capacity();
+	LINE;
+	set0.fillRange('o', 'v', 2);
+	set0.print();
 
-	ar.fillRange(3, 8, 2);
-	ar.append(3);
-	ar.append(0);
-	LOG(ar.capacity());
-	ar.print();
+	Set<char> set1(10);
+	set1.print_len();
+	set1.print_capacity();
+	set1.append('1');
+	set1.append('2');
+	
+	set1.reallocate(3);
+	set1.print_len();
+	set1.print_capacity();
+	set1.print();
+	set1.append('7');
+	set1.append('0');
+	set1.print_len();
+	set1.print_capacity();
+	set1.print();
+	set1.sortThisUp();
+	set1.print();
+	set1.sortThisDown();
+	set1.print();
+	LINE;
 
-	//ar.sortThis();
-	//ar.print();
-	std::shared_ptr<Array<int>> ar2 = ar.copy();
-	ar2->print();
-	ar2 = ar.sortCopyUp();
-	ar2->print();
+	Set<char> set2{ 'd', 'e', 'f' };
+	set2.print_len();
+	set2.print_capacity();
+	Set<char> set4 = set2;
+	set4.print();
+	std::shared_ptr<Array<char>> set3 = set2.sortCopyDown();
+	set3->print();
+	LINE;
+	int er = set2.append('e');
+	LOG(er);
 
 
-	Array<int> ar3{ 1, 2, 3 };
-	ar3.print();
 	std::cin.get();
 	return 0;
 }

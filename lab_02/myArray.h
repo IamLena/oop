@@ -16,15 +16,19 @@ public:
 	Array(const std::initializer_list<T>& list);
 	~Array() { delete[] m_ptr;}
 
-	void print() const;
-
+	virtual void print() const;
+	void print_len() const;
+	void print_capacity() const;
+	
+	bool is_empty() const;
+	bool is_enough() const;
 	size_t size() const;
 	size_t capacity() const;
 
 	int reallocate(size_t size);
 	int append(T element);
-	
-	int fillRange(T start, T end);
+	int find(T element);
+
 	int fillRange(T start, T end, T step = 1);
 
 	std::shared_ptr<Array<T>> copy();

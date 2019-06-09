@@ -1,12 +1,14 @@
 #pragma once
 #include "myArray.h"
 
+template <typename T>
 int compUp(const void* a, const void* b) {
-	return (int)(*(int*)a - *(int*)b);
+	return (int)(*(T*)a - *(T*)b);
 }
 
+template <typename T>
 int compDown(const void* a, const void* b) {
-	return (int)(*(int*)b - *(int*)a);
+	return (int)(*(T*)b - *(T*)a);
 }
 
 template <typename T>
@@ -16,7 +18,6 @@ Array<T>::Array(size_t length) {
 		std::cout << "bad allocation" << std::endl;
 	}
 	else {
-		this->m_length = length;
 		this->m_allocated = length;
 	}
 }
@@ -62,19 +63,18 @@ size_t Array<T>::capacity() const {
 
 template <typename T>
 int Array<T>::reallocate(size_t size) {
-	if (this->m_allocated < size) {
-		T* tmp = new T[size];
-		if (tmp == nullptr) {
-			std::cout << "bad allocation" << std::endl;
-			return -1;
-		}
-		this->m_allocated = size;
-		for (size_t i = 0; i < this->m_length; i++) {
-			*(tmp + i) = *(m_ptr + i);
-		}
-		delete[] m_ptr;
-		this->m_ptr = tmp;
+	T* tmp = new T[size];
+	if (tmp == nullptr) {
+		std::cout << "bad allocation" << std::endl;
+		return -1;
 	}
+	this->m_allocated = size;
+	size_t length = this->m_allocated < this->m_length ? this->m_allocated : this->m_length;
+	for (size_t i = 0; i < length; i++) {
+		*(tmp + i) = *(this->m_ptr + i);
+	}
+	delete[] this->m_ptr;
+	this->m_ptr = tmp;
 	return 0;
 }
 
@@ -89,6 +89,18 @@ int Array<T>::append(T element) {
 	this->m_length += 1;
 	return 0;
 }
+
+template <typename T>
+int Array<T>::find(T element) {
+	int rc;
+	for (size_t i = 0; i < this->m_length; i++) {
+		if (*(this->m_ptr + i) == element) {
+			return i;
+		}
+	}
+	return -1;
+}
+
 template<typename T>
 int Array<T>::fillRange(T start, T end, T step) {
 	int count = (int)round((end - start) / (double)step);
@@ -104,42 +116,27 @@ int Array<T>::fillRange(T start, T end, T step) {
 	return rc;
 }
 
-template<typename T>
-int Array<T>::fillRange(T start, T end) {
-	int count = (int)round(end - start);
-	int rc = this->allocate(count);
-	if (rc == 0) {
-		T el = start;
-		for (int i = 0; i < count; i++) {
-			*(this->m_ptr + i) = el;
-			el++;
-		}
-		this->m_length = count;
-	}
-	return rc;
-}
-
 template <typename T>
 void Array<T>::sortThisUp() {
-	qsort(this->m_ptr, this->m_length, sizeof(T), compUp);
+	qsort(this->m_ptr, this->m_length, sizeof(T), compUp<T>);
 }
 
 template <typename T>
 void Array<T>::sortThisDown() {
-	qsort(this->m_ptr, this->m_length, sizeof(T), compDown);
+	qsort(this->m_ptr, this->m_length, sizeof(T), compDown<T>);
 }
 
 template <typename T>
 std::shared_ptr <Array<T>> Array<T>::sortCopyUp() {
 	std::shared_ptr <Array<T>> tmp = this->copy();
-	qsort(tmp->m_ptr, tmp->m_length, sizeof(tmp->m_ptr[0]), compUp);
+	qsort(tmp->m_ptr, tmp->m_length, sizeof(tmp->m_ptr[0]), compUp<T>);
 	return tmp;
 }
 
 template <typename T>
 std::shared_ptr <Array<T>> Array<T>::sortCopyDown() {
 	std::shared_ptr <Array<T>> tmp = this->copy();
-	qsort(tmp->m_ptr, tmp->m_length, sizeof(tmp->m_ptr[0]), compDown);
+	qsort(tmp->m_ptr, tmp->m_length, sizeof(tmp->m_ptr[0]), compDown<T>);
 	return tmp;
 }
 
@@ -154,4 +151,24 @@ void Array<T>::print() const{
 		std::cout << *(this->m_ptr + i) << " ";
 	}
 	std::cout << '\n';
+}
+
+template <typename T>
+void Array<T>::print_len() const {
+	std::cout << "Size: " << this->size() << std::endl;
+}
+
+template <typename T>
+void Array<T>::print_capacity() const {
+	std::cout << "Capacity: " << this->capacity() << std::endl;
+}
+
+template <typename T>
+bool Array<T>::is_empty() const {
+	return this->size == 0;
+}
+
+template <typename T>
+bool Array<T>::is_enough() const {
+	return this->m_allocated > this->m_length;
 }
