@@ -2,7 +2,7 @@
 //
 
 #include <iostream>
-#include "myArray_imp.h"
+//#include "myArray_imp.h"
 #include "set_imp.h"
 
 #define LOG(X) std::cout << X << std::endl
@@ -35,11 +35,18 @@ int main()
 
 	Set<char> s1{ '1', '2', '3' };
 	Set<char> *s2 = s1.clone();
-	Set<char>s3 = s1;
+	Set<char>s3{ '3', 'a', '2', '7' };
 	s1.print();
 	s2->print();
 	s3.print();
-	Set<char> s4 = s1.intersection(s1);
+	//Set<char> s4 = s1.intersection(s3);
+
+	Set<int> sin1 = { 1, 2, 3 };
+	sin1.sortThisUp();
+	sin1.print();
+	sin1.append(5);
+	//sin1.shift(1, 1);
+	sin1.print();
 
 	return 0;
 }
