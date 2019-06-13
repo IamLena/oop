@@ -16,6 +16,10 @@ public:
 	Array(const std::initializer_list<T>& list);
 	~Array() { delete[] m_ptr;}
 
+	Array<T>& operator = (Array<T> &another);
+	Array<T>& operator = (const Array<T> &another);
+	Array<T>& operator = (const std::initializer_list<T>& list);
+
 	virtual void print() const;
 	void print_len() const;
 	void print_capacity() const;
@@ -26,20 +30,20 @@ public:
 	size_t capacity() const;
 
 	int reallocate(size_t size);
+	void shift(size_t index, int number);
 	int append(T element);
+	int remove(T element);
 	int find(T element);
+	bool includes(T element);
 
 	int fillRange(T start, T end, T step = 1);
 
 	std::shared_ptr<Array<T>> copy();
-
 
 	void sortThisUp();
 	void sortThisDown();
 	std::shared_ptr <Array<T>> sortCopyUp();
 	std::shared_ptr <Array<T>> sortCopyDown();
 
-	T operator [](size_t index) {
-		return *(m_ptr + index);
-	}
+	T operator [](size_t index);
 };

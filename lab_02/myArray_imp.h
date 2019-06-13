@@ -19,12 +19,15 @@ Array<T>::Array(size_t length) {
 	}
 	else {
 		this->m_allocated = length;
+		this->m_length = 0;
 	}
 }
 
 template <typename T>
 Array<T>::Array(const std::initializer_list<T>& list) {
 	this->m_allocated = 0;
+	this->m_length = 0;
+	this->m_ptr = nullptr;
 	if (this->reallocate(list.size()) == 0) {
 		int i = 0;
 		for (T element : list) {
@@ -91,8 +94,25 @@ int Array<T>::append(T element) {
 }
 
 template <typename T>
+void Array<T>::shift(size_t index, int number) {
+	this->m_length--;
+	for (size_t i = index; i < this->size(); i++) {
+		this[i] = this[i + 1];
+	}
+}
+
+template <typename T>
+int Array<T>::remove(T element) {
+	int index = this->find(element);
+	if (index == -1) {
+		return -1;
+	}
+	this->shift(index, 1);
+	return 0;
+}
+
+template <typename T>
 int Array<T>::find(T element) {
-	int rc;
 	for (size_t i = 0; i < this->m_length; i++) {
 		if (*(this->m_ptr + i) == element) {
 			return i;
@@ -171,4 +191,46 @@ bool Array<T>::is_empty() const {
 template <typename T>
 bool Array<T>::is_enough() const {
 	return this->m_allocated > this->m_length;
+}
+
+template <typename T>
+bool Array<T>::includes(T element) {
+	if (this->find(element) == -1) {
+		return false;
+	}
+	return true;
+}
+
+template <typename T>
+Array<T>& Array<T>::operator = (Array<T> &another) {
+	for (size_t i = 0; i < another.size(); i++) {
+		this->append(another[i]);
+	}
+	return *this;
+}
+
+template <typename T>
+Array<T>& Array<T>::operator = (const Array<T>& another) {
+	for (size_t i = 0; i < another.size(); i++) {
+		this->append(another.m_ptr[i]);
+	}
+	return *this;
+}
+
+template <typename T>
+Array<T>& Array<T>::operator = (const std::initializer_list<T>& list) {
+	if (this->reallocate(list.size()) == 0) {
+		int i = 0;
+		for (T element : list) {
+			this->m_ptr[i] = element;
+			i++;
+		}
+		this->m_length = this->m_allocated;
+	}
+	return *this;
+}
+
+template <typename T>
+T Array<T>::operator [](size_t index) {
+	return this->m_ptr[index];
 }
