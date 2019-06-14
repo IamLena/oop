@@ -64,10 +64,8 @@ Array<T>::Array(Array<T>& another) {
 	}
 }
 template <typename T>
-Array<T>* Array<T>::clone() {
-	Array<T> *res = new Array<T>;
-	*res = *this;
-	return res;
+Array<T>* Array<T>::clone() const{
+	return new Array(*this);
 }
 //assignments
 template <typename T>
@@ -149,6 +147,7 @@ bool Array<T>::includes(T element) {
 	return true;
 }
 
+
 //getters
 template <typename T>
 size_t Array<T>::size() const {
@@ -201,7 +200,7 @@ int Array<T>::find(T element) {
 	return -1;
 }
 template <typename T>
-T& Array<T>::operator [](size_t index) {
+T& Array<T>::operator [](size_t index) const {
 	return this->m_ptr[index];
 }
 

@@ -21,7 +21,7 @@ public:
 	//copy
 	Array(const Array<T>& another);
 	Array(Array<T>& another);
-	Array<T>* clone();
+	Array<T>* clone() const;
 	//assignments
 	Array<T>& operator = (Array<T>& another);
 	Array<T>& operator = (const Array<T>& another);
@@ -46,15 +46,13 @@ public:
 	int set(size_t index, T element);
 	int remove(T element);
 	int find(T element);
-	T& operator [](size_t index);
+	T& operator [](size_t index) const;
 	
 	//sorting
 	void sortThisUp();
 	void sortThisDown();
 	Array<T> sortCopyUp();
 	Array<T> sortCopyDown();
-	//std::shared_ptr <Array<T>> sortCopyUp();
-	//std::shared_ptr <Array<T>> sortCopyDown();
 
 	int reallocate(size_t size);
 	void shift(size_t index, int number);
