@@ -25,7 +25,10 @@ public:
 
 	//set operations
 	Set<T> unionMethod(Set<T>& another_set) const;
-	Set<T> operator + (Set<T>& another_set);
+	Set<T> operator + (Set<T>& another_set) const;
 
-	Set<T> intersection(Set<T>& another_set);
+	Set<T> intersection(Set<T>& another_set) const;
+
+	Set<T> substraction(Set<T>& another_set) const;
+	Set<T> operator - (Set<T>& another_set) const;
 };

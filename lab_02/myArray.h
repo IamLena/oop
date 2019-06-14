@@ -55,6 +55,6 @@ public:
 	Array<T> sortCopyDown();
 
 	int reallocate(size_t size);
-	void shift(size_t index, int number);
+	void shiftLeft(size_t index, int number);
 	int fillRange(T start, T end, T step = 1);
 };

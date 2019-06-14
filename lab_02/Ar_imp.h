@@ -187,7 +187,7 @@ int Array<T>::remove(T element) {
 	if (index == -1) {
 		return -1;
 	}
-	this->shift(index, -1);
+	this->shiftLeft(index, 1);
 	return 0;
 }
 template <typename T>
@@ -243,19 +243,11 @@ int Array<T>::reallocate(size_t size) {
 	return 0;
 }
 template <typename T>
-void Array<T>::shift(size_t index, int number) {
-	if (number < 0) {
-		number = -number;
-		for (size_t i = index; i < this->m_length - number - 1; i++) {
-			this[i] = this[i + number];
-		}
-		this->m_length -= number;
+void Array<T>::shiftLeft(size_t index, int number) {
+	for (size_t i = index; i < this->m_length - number; i++) {
+		(*this)[i] = (*this)[i + number];
 	}
-	else if (number > 0) {
-		for (size_t i = this->m_length - 1; i > number; i--) {
-			this[i] = this[i - number];
-		}
-	}	
+	this->m_length -= number;
 }
 template <typename T>
 int Array<T>::fillRange(T start, T end, T step) {

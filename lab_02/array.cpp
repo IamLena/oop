@@ -57,5 +57,9 @@ int array(void){
 	ad3.print();
 	ad4.print();
 
+	Array<int> a7 { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+	a7.shiftLeft(0, 1);
+	a7.print();
+
 	return 0;
 }

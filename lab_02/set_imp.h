@@ -80,12 +80,12 @@ Set<T> Set<T>::unionMethod(Set<T>& another_set) const {
 }
 
 template <typename T>
-Set<T> Set<T>::operator + (Set<T>& another_set) {
+Set<T> Set<T>::operator + (Set<T>& another_set) const {
 	return this->unionMethod(another_set);
 }
 
 template <typename T>
-Set<T> Set<T>::intersection(Set<T>& another_set) {
+Set<T> Set<T>::intersection(Set<T>& another_set) const {
 	Set<T> copy = *this;
 	for (size_t i = 0; i < copy.size(); i++) {
 		T el = copy[i];
@@ -94,4 +94,21 @@ Set<T> Set<T>::intersection(Set<T>& another_set) {
 		}
 	}
 	return copy;
+}
+
+template <typename T>
+Set<T> Set<T>::substraction(Set<T>& another_set) const {
+	Set<T> copy = *this;
+	for (size_t i = 0; i < copy.size(); i++) {
+		T el = copy[i];
+		if (another_set.includes(el)) {
+			copy.remove(el);
+		}
+	}
+	return copy;
+}
+
+template <typename T>
+Set<T> Set<T>::operator - (Set<T>& another_set) const {
+	return this->substraction(another_set);
 }
