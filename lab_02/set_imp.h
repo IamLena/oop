@@ -52,12 +52,13 @@ int Set<T>::append(T element) {
 
 //check
 template <typename T>
-bool Set<T>::operator ==(const Set<T>& another_set) const {
-	if (this->m_length != &another_set.size()) {
+bool Set<T>::operator == (const Set<T>& another_set) const {
+	if (this->m_length != another_set.size()) {
 		return false;
 	}
 	for (int i = 0; i < this->m_length; i++) {
-		if (!&another_set.includes(*(this->m_ptr + i))) {
+		T el = (*this)[i];
+		if (!another_set.includes(el)) {
 			return false;
 		}
 	}
@@ -66,7 +67,7 @@ bool Set<T>::operator ==(const Set<T>& another_set) const {
 
 template <typename T>
 bool Set<T>::operator !=(const Set<T>& another_set) const {
-	return !*this == &another_set;
+	return !(*this == another_set);
 }
 
 //set operations
@@ -91,6 +92,7 @@ Set<T> Set<T>::intersection(Set<T>& another_set) const {
 		T el = copy[i];
 		if (!another_set.includes(el)) {
 			copy.remove(el);
+			i--;
 		}
 	}
 	return copy;
@@ -103,6 +105,7 @@ Set<T> Set<T>::substraction(Set<T>& another_set) const {
 		T el = copy[i];
 		if (another_set.includes(el)) {
 			copy.remove(el);
+			i--;
 		}
 	}
 	return copy;

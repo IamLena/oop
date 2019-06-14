@@ -35,7 +35,7 @@ public:
 	//check
 	bool is_empty() const;
 	bool is_enough() const;
-	bool includes(T element);
+	bool includes(T element) const;
 
 	//getters
 	size_t size() const;
@@ -45,14 +45,14 @@ public:
 	int append(T element);
 	int set(size_t index, T element);
 	int remove(T element);
-	int find(T element);
+	int find(T element) const;
 	T& operator [](size_t index) const;
 	
 	//sorting
 	void sortThisUp();
 	void sortThisDown();
-	Array<T> sortCopyUp();
-	Array<T> sortCopyDown();
+	Array<T> sortCopyUp() const;
+	Array<T> sortCopyDown() const;
 
 	int reallocate(size_t size);
 	void shiftLeft(size_t index, int number);

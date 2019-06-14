@@ -140,7 +140,7 @@ bool Array<T>::is_enough() const {
 	return this->m_allocated > this->m_length;
 }
 template <typename T>
-bool Array<T>::includes(T element) {
+bool Array<T>::includes(T element) const {
 	if (this->find(element) == -1) {
 		return false;
 	}
@@ -191,7 +191,7 @@ int Array<T>::remove(T element) {
 	return 0;
 }
 template <typename T>
-int Array<T>::find(T element) {
+int Array<T>::find(T element) const{
 	for (size_t i = 0; i < this->m_length; i++) {
 		if ((*this)[i] == element) {
 			return i;
@@ -214,13 +214,13 @@ void Array<T>::sortThisDown() {
 	qsort(this->m_ptr, this->m_length, sizeof(T), compDown<T>);
 }
 template <typename T>
-Array<T> Array<T>::sortCopyUp() {
+Array<T> Array<T>::sortCopyUp() const {
 	Array<T> copy  = *this;
 	copy.sortThisUp();
 	return copy;
 }
 template <typename T>
-Array<T> Array<T>::sortCopyDown() {
+Array<T> Array<T>::sortCopyDown() const{
 	Array<T> copy = *this;
 	copy.sortThisDown();
 	return copy;

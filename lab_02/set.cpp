@@ -1,29 +1,65 @@
 #include <iostream>
 #include "set_imp.h"
 
+#define LOG(X) std::cout << X << std::endl
+#define LINE std::cout << "-----------------------------" << std::endl
+
 int main(void) {
-	Set<int> s0;
-	Set<char> s1(4);
-	Set<double> s2 = { 1, 2.3, 4.2 };
-	Set<std::string> s3{ "hello", "world" };
+	Set<int> s0 = { 1, 4, 2, 5, 7 };
+	Set<int> s1 = { 1, 4, 3, 6 };
 
-	s0.append(2);
-	s0.append(3);
-	Set<int> s4 = s0;
-	Set<int> s5 = { 4, 5, 2 };
+	LOG("s0");
+	s0.print();
+	LOG("s1");
+	s1.print();
+	LINE;
 
-	Set<int> u;
-	//s4 {2, 3}
-	//s5 {4, 5, 2}
-	u = s4 + s5;
-	Set<int> inter = s4.intersection(s5);
+	LOG("union");
+	Set<int> u0 = s0 + s1;
+	Set<int> u1 = s0.unionMethod(s1);
+	Set<int> u2 = s1.unionMethod(s0);
 
-	s4.print();
-	s5.print();
-	u.print();
-	inter.print();
-	Set<int> d;
-	d = s5 - s4;
-	d.print();
+	u0.print();
+	u1.print();
+	u2.print();
+
+	LOG((u0 == u1));
+	LOG((u0 == u2));
+	LOG((u1 == u2));
+	LOG((u0 != u1));
+	LINE;
+	LOG("substraction");
+	Set<int> d0 = s0 - s1;
+	Set<int> d1 = s0.substraction(s1);
+	Set<int> d2 = s1.substraction(s0);
+
+	d0.print();
+	d1.print();
+	d2.print();
+
+	LOG((d0 == d1));
+	LOG((d0 == d2));
+	LOG((d1 == d2));
+	LOG((d0 != d1));
+	LINE;
+
+	LOG("intersection");
+	Set<int> n1 = s0.intersection(s1);
+	Set<int> n2 = s1.intersection(s0);
+
+	n1.print();
+	n2.print();
+
+	LOG((n1 == n2));
+	LOG((n2 == n1));
+	LOG((n2 != n1));
+	LINE;
+
+	LOG("s0");
+	s0.print();
+	LOG("s1");
+	s1.print();
+	LINE;
+
 	return 0;
 }
