@@ -29,7 +29,7 @@ void Set<T>::print() const {
 	}
 	std::cout << "Set: ";
 	for (size_t i = 0; i < this->m_length; i++) {
-		std::cout << this->m_ptr[i] << " ";
+		std::cout << this->m_ptr.get()[i] << " ";
 	}
 	std::cout << '\n';
 }
@@ -43,7 +43,7 @@ int Set<T>::append(T element) {
 		if (rc == -1) { return -1; }
 	}
 	if (!this->includes(element)) {
-		this->m_ptr[this->m_length] = element;
+		(*this)[this->m_length] = element;
 		this->m_length += 1;
 		return 0;
 	}
@@ -56,7 +56,7 @@ bool Set<T>::operator == (const Set<T>& another_set) const {
 	if (this->m_length != another_set.size()) {
 		return false;
 	}
-	for (int i = 0; i < this->m_length; i++) {
+	for (size_t i = 0; i < this->m_length; i++) {
 		T el = (*this)[i];
 		if (!another_set.includes(el)) {
 			return false;

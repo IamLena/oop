@@ -19,6 +19,7 @@ public:
 	
 	int append(T element);
 	
+	
 	//check
 	bool operator ==(const Set<T>& another_set) const;
 	bool operator !=(const Set<T>& another_set) const;

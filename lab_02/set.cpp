@@ -61,5 +61,9 @@ int main(void) {
 	s1.print();
 	LINE;
 
+	Set<int> tmp_12 = { 12, 14, 125 };
+	for (auto i = tmp_12.inititalizeIterator(); i.check(); i++)
+		std::cout << *i << std::endl;
+
 	return 0;
 }

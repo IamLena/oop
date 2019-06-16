@@ -20,7 +20,7 @@ int array(void){
 	ad1.reallocate(3);
 	ad1.set(2, 4.5);
 	ai1.remove(2);
-	ac1.sortThisDown();
+	//ac1.sortThisDown();
 	as1.append("hello");
 
 	ad1.print();
@@ -29,7 +29,7 @@ int array(void){
 	as1.print();
 	LINE;
 
-	Array<char> ac2 = ac1.sortCopyUp();
+	Array<char> ac2 = ac1;
 	ac2.print();
 	ac1 = ac2;
 	Array<int> ai2 = Array<int>(ai1);
@@ -37,7 +37,7 @@ int array(void){
 	ai2.append(7);
 	ai2.print_capacity();
 	ai2.print_len();
-	Array<int>* ai3_p = ai2.clone();
+	std::shared_ptr<Array<int>> ai3_p = ai2.clone();
 	ai3_p->print();
 	LOG(as1.is_empty());
 	LOG(as1.is_enough());
@@ -47,7 +47,7 @@ int array(void){
 	LOG(ai2.find(7));
 	LOG(as1[0]);
 
-	Array<double> ad2 = { 3.4, 6.2, 0.4, -3.4, -6.1 };
+	/*Array<double> ad2 = { 3.4, 6.2, 0.4, -3.4, -6.1 };
 	Array<double> ad3 = ad2.sortCopyDown();
 	Array<double> ad4 = ad2.sortCopyUp();
 	ad2.sortThisDown();
@@ -55,7 +55,7 @@ int array(void){
 	ad2.sortThisUp();
 	ad2.print();
 	ad3.print();
-	ad4.print();
+	ad4.print();*/
 
 	Array<int> a7 { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
 	a7.shiftLeft(0, 1);

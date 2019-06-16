@@ -14,7 +14,7 @@ int compDown(const void* a, const void* b) {
 //constructors
 template <typename T>
 Array<T>::Array(size_t length) {
-	this->m_ptr = (T*)new T[length];
+	this->m_ptr = std::shared_ptr<T> (new T[length]);
 	if (this->m_ptr == nullptr) {
 		std::cout << "bad allocation" << std::endl;
 	}
@@ -64,8 +64,8 @@ Array<T>::Array(Array<T>& another) {
 	}
 }
 template <typename T>
-Array<T>* Array<T>::clone() const{
-	return new Array(*this);
+std::shared_ptr<Array<T>> Array<T>::clone() const {
+	return std::shared_ptr<Array<T>> (new Array(*this));
 }
 //assignments
 template <typename T>
@@ -115,9 +115,8 @@ void Array<T>::print() const {
 		return;
 	}
 	std::cout << "Array: ";
-	//itterator
 	for (size_t i = 0; i < this->m_length; i++) {
-		std::cout << this->m_ptr[i] << " ";
+		std::cout << this->m_ptr.get()[i] << " ";
 	}
 	std::cout << '\n';
 }
@@ -146,6 +145,13 @@ bool Array<T>::includes(T element) const {
 	}
 	return true;
 }
+template <typename T>
+bool Array<T>::includes(ConstIterator<T>& iter) const {
+	if (this->find(iter) == -1) {
+		return false;
+	}
+	return true;
+}
 
 
 //getters
@@ -161,12 +167,23 @@ size_t Array<T>::capacity() const {
 //element operations
 template <typename T>
 int Array<T>::append(T element) {
-	int rc;
 	if (this->m_allocated == this->m_length) {
-		rc = this->reallocate(this->m_allocated + ALOCSTEP);
-		if (rc == -1) { return rc; }
+		if (this->reallocate(this->m_allocated + ALOCSTEP) == -1)
+			{ return -1; }
 	}
 	(*this)[this->m_length] = element;
+	this->m_length += 1;
+	return 0;
+}
+template<typename T>
+int Array<T>::append(ConstIterator<T>& iter) {
+	if (this->m_allocated == this->m_length) {
+		if (this->reallocate(this->m_allocated + ALOCSTEP) == -1)
+		{
+			return -1;
+		}
+	}
+	(*this)[this->m_length] = *iter;
 	this->m_length += 1;
 	return 0;
 }
@@ -191,6 +208,15 @@ int Array<T>::remove(T element) {
 	return 0;
 }
 template <typename T>
+int remove(ConstIterator<T>& iter) {
+	int index = this->find(*iter);
+	if (index == -1) {
+		return -1;
+	}
+	this->shiftLeft(index, 1);
+	return 0;
+}
+template <typename T>
 int Array<T>::find(T element) const{
 	for (size_t i = 0; i < this->m_length; i++) {
 		if ((*this)[i] == element) {
@@ -199,15 +225,26 @@ int Array<T>::find(T element) const{
 	}
 	return -1;
 }
+template<typename T>
+int Array<T>::find(ConstIterator<T>& iter) {
+	for (size_t i = 0; i < this->m_length; i++) {
+		if ((*this)[i] == *iter) {
+			return i;
+		}
+	}
+	return -1;
+}
 template <typename T>
 T& Array<T>::operator [](size_t index) const {
-	return this->m_ptr[index];
+	return this->m_ptr.get()[index];
 }
 
 //sorting
-template <typename T>
+/*template <typename T>
 void Array<T>::sortThisUp() {
-	qsort(this->m_ptr, this->m_length, sizeof(T), compUp<T>);
+	//std::sort(m_ptr, m_ptr + m_length);
+	//std::sort(m_ptr, m_ptr + m_length, compUp<T>);
+	//qsort(this->m_ptr, this->m_length, sizeof(T), compUp<T>);
 }
 template <typename T>
 void Array<T>::sortThisDown() {
@@ -224,11 +261,11 @@ Array<T> Array<T>::sortCopyDown() const{
 	Array<T> copy = *this;
 	copy.sortThisDown();
 	return copy;
-}
+}*/
 
 template <typename T>
 int Array<T>::reallocate(size_t size) {
-	T* tmp = new T[size];
+	std::shared_ptr<T> tmp = std::shared_ptr<T> (new T[size]);
 	if (tmp == nullptr) {
 		std::cout << "bad allocation" << std::endl;
 		return -1;
@@ -236,9 +273,9 @@ int Array<T>::reallocate(size_t size) {
 	this->m_allocated = size;
 	size_t length = this->m_allocated < this->m_length ? this->m_allocated : this->m_length;
 	for (size_t i = 0; i < length; i++) {
-		tmp[i] = (*this)[i];
+		tmp.get()[i] = (*this)[i];
 	}
-	delete[] this->m_ptr;
+	this->m_ptr.reset();
 	this->m_ptr = tmp;
 	return 0;
 }
@@ -262,4 +299,10 @@ int Array<T>::fillRange(T start, T end, T step) {
 		this->m_length = count;
 	}
 	return rc;
+}
+
+template<typename T>
+ConstIterator<T> Array<T>::inititalizeIterator() const
+{
+	return ConstIterator<T>(this->m_ptr, this->m_length);
 }
