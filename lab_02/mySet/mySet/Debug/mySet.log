@@ -1,0 +1,32 @@
+﻿  array.cpp
+C:\Users\helly\source\repos\oop\lab_02\mySet\mySet\myArray.h(67,1): warning C4521:  'Array<double>': multiple copy constructors specified
+C:\Users\helly\source\repos\oop\lab_02\mySet\mySet\array.cpp(9): message :  see reference to class template instantiation 'Array<double>' being compiled
+C:\Users\helly\source\repos\oop\lab_02\mySet\mySet\myArray.h(67,1): warning C4522:  'Array<double>': multiple assignment operators specified
+C:\Users\helly\source\repos\oop\lab_02\mySet\mySet\myArray.h(67,1): warning C4521:  'Array<int>': multiple copy constructors specified
+C:\Users\helly\source\repos\oop\lab_02\mySet\mySet\array.cpp(10): message :  see reference to class template instantiation 'Array<int>' being compiled
+C:\Users\helly\source\repos\oop\lab_02\mySet\mySet\myArray.h(67,1): warning C4522:  'Array<int>': multiple assignment operators specified
+C:\Users\helly\source\repos\oop\lab_02\mySet\mySet\myArray.h(67,1): warning C4521:  'Array<char>': multiple copy constructors specified
+C:\Users\helly\source\repos\oop\lab_02\mySet\mySet\array.cpp(11): message :  see reference to class template instantiation 'Array<char>' being compiled
+C:\Users\helly\source\repos\oop\lab_02\mySet\mySet\myArray.h(67,1): warning C4522:  'Array<char>': multiple assignment operators specified
+C:\Users\helly\source\repos\oop\lab_02\mySet\mySet\myArray.h(67,1): warning C4521:  'Array<std::string>': multiple copy constructors specified
+C:\Users\helly\source\repos\oop\lab_02\mySet\mySet\array.cpp(12): message :  see reference to class template instantiation 'Array<std::string>' being compiled
+  set.cpp
+C:\Users\helly\source\repos\oop\lab_02\mySet\mySet\myArray.h(67,1): warning C4522:  'Array<std::string>': multiple assignment operators specified
+C:\Users\helly\source\repos\oop\lab_02\mySet\mySet\myArray.h(67,1): warning C4521:  'Array<T>': multiple copy constructors specified
+C:\Users\helly\source\repos\oop\lab_02\mySet\mySet\myArray.h(67,1): warning C4521:         with
+C:\Users\helly\source\repos\oop\lab_02\mySet\mySet\myArray.h(67,1): warning C4521:         [
+C:\Users\helly\source\repos\oop\lab_02\mySet\mySet\myArray.h(67,1): warning C4521:             T=int
+C:\Users\helly\source\repos\oop\lab_02\mySet\mySet\myArray.h(67,1): warning C4521:         ]
+C:\Users\helly\source\repos\oop\lab_02\mySet\mySet\set.h(6): message :  see reference to class template instantiation 'Array<T>' being compiled
+C:\Users\helly\source\repos\oop\lab_02\mySet\mySet\set.h(6): message :         with
+C:\Users\helly\source\repos\oop\lab_02\mySet\mySet\set.h(6): message :         [
+C:\Users\helly\source\repos\oop\lab_02\mySet\mySet\set.h(6): message :             T=int
+C:\Users\helly\source\repos\oop\lab_02\mySet\mySet\set.h(6): message :         ]
+C:\Users\helly\source\repos\oop\lab_02\mySet\mySet\set.cpp(8): message :  see reference to class template instantiation 'Set<int>' being compiled
+  Generating Code...
+C:\Users\helly\source\repos\oop\lab_02\mySet\mySet\myArray.h(67,1): warning C4522:  'Array<T>': multiple assignment operators specified
+C:\Users\helly\source\repos\oop\lab_02\mySet\mySet\myArray.h(67,1): warning C4522:         with
+C:\Users\helly\source\repos\oop\lab_02\mySet\mySet\myArray.h(67,1): warning C4522:         [
+C:\Users\helly\source\repos\oop\lab_02\mySet\mySet\myArray.h(67,1): warning C4522:             T=int
+C:\Users\helly\source\repos\oop\lab_02\mySet\mySet\myArray.h(67,1): warning C4522:         ]
+  mySet.vcxproj -> C:\Users\helly\source\repos\oop\lab_02\mySet\Debug\mySet.exe
