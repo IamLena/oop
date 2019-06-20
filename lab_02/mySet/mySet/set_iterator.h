@@ -12,7 +12,7 @@ public:
     ConstIterator(const std::shared_ptr<T>& address, size_t size);
     ConstIterator(const ConstIterator &other);
     const T& operator * () const;
-    const T* operator -> ();
+    const std::shared_ptr<T> operator -> () const;
 };
 
 #include "set_iterator_imp.h"

@@ -56,20 +56,20 @@ BaseIterator<T> BaseIterator<T>::operator --(int)
     return tmp;
 }
 
-template <class Type>
+template <typename Type>
 bool operator == (const BaseIterator<Type>& it1, const BaseIterator<Type>& it2)
 {
     return it1.actual_address() == it2.actual_address();
 }
 
-template <class Type>
+template <typename Type>
 bool operator != (const BaseIterator<Type>& it1, const BaseIterator<Type>& it2)
 {
     return it1.actual_address() != it2.actual_address();
 }
 
-template <class T>
-T* BaseIterator<T>::actual_address() const
+template <typename T>
+std::shared_ptr<T> BaseIterator<T>::actual_address() const
 {
     if (address.lock() == 0 || !this->check())
         throw base_exception(__FILE__, typeid(*this).name(), __LINE__, "Iterator error!");

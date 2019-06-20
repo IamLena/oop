@@ -1,17 +1,17 @@
 #ifndef ITERATOR_H
 #define ITERATOR_H
 
-#include <iostream>
 #include <memory>
 
-template <class T>
+template <typename T>
 class BaseIterator
 {
 protected:
 	std::weak_ptr<T> address;
 	size_t size;
 	size_t index;
-	T* actual_address() const;
+
+	std::shared_ptr<T> actual_address() const;
 public:
 	BaseIterator() {};
 	BaseIterator(const std::shared_ptr<T>& address, size_t size);
@@ -23,12 +23,11 @@ public:
     BaseIterator& operator --();
     BaseIterator operator ++(int);
     BaseIterator operator --(int);
-    ptrdiff_t operator -(const BaseIterator<T> &other) const;
 
-    template <class Type>
+    template <typename Type>
     friend bool operator == (const BaseIterator<Type> &it1, const BaseIterator<Type> &it2);
 
-    template <class Type>
+    template <typename Type>
     friend bool operator != (const BaseIterator<Type> &it1, const BaseIterator<Type> &it2);
 };
 

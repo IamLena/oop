@@ -6,7 +6,6 @@ class base_exception : public std::exception {
 protected:
 	std::string info;
 public:
-	//"\x1B[31mTexting\033[0m\t\t"
 	base_exception(std::string file, std::string name, int line, std::string message) {
 		info = "\x1B[31mERROR\033[0m\t\t\nfile: " + file + "\nclass: " + name + "\nline: " + std::to_string(line) + "\n" + message + "\n";
 	}

@@ -20,7 +20,7 @@ const T& ConstIterator<T>::operator *() const
 }
 
 template <class T>
-const T* ConstIterator<T>:: operator ->()
+const std::shared_ptr<T> ConstIterator<T>::operator ->() const
 {
     return this->actual_address();
 }
