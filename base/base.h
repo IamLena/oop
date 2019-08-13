@@ -6,6 +6,7 @@ namespace base {
 	class BaseContainer {
 	protected:
 		size_t m_count;
+		void set_size(int size);
 	public:
 		BaseContainer();
 		explicit BaseContainer(size_t count);
@@ -16,43 +17,54 @@ namespace base {
 	};
 
 	template <typename T>
-	class Iterator {
+	class BaseIterator {
+	protected:
+		std::weak_ptr<T> m_ptr;
+		size_t m_index;
 	public:
-		Iterator();
-		explicit Iterator(int size, std::shared_ptr<T>& ptr);
-		explicit Iterator(int size, T* ptr);
-		Iterator(const Iterator<T>& iter);
-		Iterator<T>& operator = (const Iterator<T>& iter);
-		~Iterator();
+		BaseIterator(std::shared_ptr<T> ptr, size_t index = 0);
+		BaseIterator(const BaseIterator<T>& iter);
+		virtual ~BaseIterator();
 
-		Iterator<T>& operator ++ ();
-		Iterator<T>& operator -- ();
-		Iterator<T> operator ++ (int i);
-		Iterator<T> operator -- (int i);
-		Iterator<T>& operator += (int i);
-		Iterator<T>& operator -= (int i);
-		Iterator<T> operator + (int num) const;
-		Iterator<T> operator - (int num) const;
+		BaseIterator<T>& operator = (const BaseIterator<T>& iter);
+		
+		BaseIterator<T>& operator ++ ();
+		BaseIterator<T>& operator -- ();
+		BaseIterator<T>& operator ++ (int i);
+		BaseIterator<T>& operator -- (int i);
+		BaseIterator<T>& operator += (int i);
+		BaseIterator<T>& operator -= (int i);
+		BaseIterator<T> operator +  (int i) const;
+		BaseIterator<T> operator - (int i) const;
 
-		bool operator == (const Iterator<T>& iter) const;
-		bool operator != (const Iterator<T>& iter) const;
-		bool operator < (const Iterator<T>& iter) const;
-		bool operator <= (const Iterator<T>& iter) const;
-		bool operator > (const Iterator<T>& iter) const;
-		bool operator >= (const Iterator<T>& iter) const;
-		T get_value() const;
-		friend std::ostream& operator<< (std::ostream& os, const Iterator<T>& iter) {
-			os << iter.get_value();
-			return os;
-		}
-
-	private:
-		std::weak_ptr<T> beg;
-		int m_index;
-		int m_size;
+		/*bool operator == (const BaseIterator<T>& iter) const;
+		bool operator != (const BaseIterator<T>& iter) const;
+		bool operator < (const BaseIterator<T>& iter) const;
+		bool operator > (const BaseIterator<T>& iter) const;
+		bool operator <= (const BaseIterator<T>& iter) const;
+		bool operator >= (const BaseIterator<T>& iter) const;*/
 	};
 
-	class ConstIterator {
+	template <typename T>
+	class Iterator : public BaseIterator<T> {
+	public:
+		Iterator(std::shared_ptr<T> ptr, size_t index = 0);
+		Iterator(const Iterator<T>& iter);
+		~Iterator();
 
+		T* get_ptr();
+		const T* get_ptr() const;
+		T get_value ();
+		const T get_value () const;
+	};
+
+	template <typename T>
+	class ConstIterator : public BaseIterator<T> {
+		ConstIterator(std::shared_ptr<T> ptr, size_t index = 0);
+		ConstIterator(const ConstIterator<T>& iter);
+		~ConstIterator();
+
+		const T* get_ptr() const;
+		const T get_value() const;
 	};
 }
