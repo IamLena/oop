@@ -18,10 +18,10 @@ public:
 	Vector(const Vector<T>& another);
 	Vector(Vector<T>&& another);
 
-	/*Vector<T>& operator = (const Vector<T>& another);
-	Vector<T>& operator = (Vector<T>& another);
+	Vector<T>& operator = (const Vector<T>& another);
+	Vector<T>& operator = (Vector<T>&& another);
 	Vector<T>& operator = (std::initializer_list<T> list);
-	Vector<T>& operator = (const std::vector<T> v);*/
+	Vector<T>& operator = (const std::vector<T> v);
 
 	~Vector();
 

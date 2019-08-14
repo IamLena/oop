@@ -61,3 +61,42 @@ Vector<T>::Vector(Vector<T>&& another) {
 
 template <typename T>
 Vector<T>::~Vector() {};
+
+template <typename T>
+Vector<T>& Vector<T>::operator = (const Vector<T>& another) {
+	int size = another.get_size();
+	this->m_size = size;
+	m_ptr = std::shared_ptr<T>((T*)malloc(size * sizeof(T)), free);
+	for (int i = 0; i < size; i++) {
+		m_ptr.get()[i] = another.m_ptr.get()[i];
+	}
+	return *this;
+}
+template <typename T>
+Vector<T>& Vector<T>::operator = (Vector<T>&& another) {
+	m_size = another.m_size;
+	m_ptr = another.m_ptr;
+	return *this;
+}
+template <typename T>
+Vector<T>& Vector<T>::operator = (std::initializer_list<T> list) {
+	int size = list.size();
+	this->m_size = size;
+	m_ptr = std::shared_ptr<T>((T*)malloc(size * sizeof(T)), free); //reassignment
+	int i = 0;
+	for (auto el : list) {
+		m_ptr.get()[i] = el;
+		i++;
+	}
+	return *this;
+}
+template <typename T>
+Vector<T>& Vector<T>::operator = (const std::vector<T> v) {
+	int size = v.size();
+	this->m_size = size;
+	m_ptr = std::shared_ptr<T>((T*)malloc(size * sizeof(T)), free);
+	for (int i = 0; i < size; i++) {
+		m_ptr.get()[i] = v[i];
+	}
+	return *this;
+}
