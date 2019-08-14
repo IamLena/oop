@@ -1,12 +1,12 @@
 #pragma once
 #include "base.h"
 
-base::BaseContainer::BaseContainer() { m_count = 0; }
-base::BaseContainer::BaseContainer(size_t count) { m_count = count; }
+base::BaseContainer::BaseContainer() { m_size = 0; }
+base::BaseContainer::BaseContainer(size_t count) { m_size = count; }
 base::BaseContainer::~BaseContainer() {}
-bool base::BaseContainer::is_empty() const { return m_count == 0; }
-size_t base::BaseContainer::get_size() const { return m_count; }
-void base::BaseContainer::set_size(int size) { m_count = size; }
+bool base::BaseContainer::is_empty() const { return m_size == 0; }
+size_t base::BaseContainer::get_size() const { return m_size; }
+void base::BaseContainer::set_size(int size) { m_size = size; }
 
 //----------------------------- BaseIterator ------------------------------------
 template <typename T>
@@ -83,7 +83,7 @@ bool base::BaseIterator<T>::operator == (const BaseIterator<T>& iter) const {
 }
 template <typename T>
 bool base::BaseIterator<T>::operator != (const BaseIterator<T>& iter) const {
-	return this.m_ptr != iter.m_ptr || this.m_index != iter.m_index;
+	return this->m_ptr.lock().get() != iter.m_ptr.lock().get() || this->m_index != iter.m_index;
 }
 
 //--------------------------------Iterator---------------------------------------
@@ -91,7 +91,7 @@ template <typename T>
 base::Iterator<T>::Iterator(std::shared_ptr<T> ptr, size_t index) : base::BaseIterator<T>(ptr, index) {};
 
 template <typename T>
-base::Iterator<T>::Iterator(const Iterator<T>& iter) : base::BaseIterator<T>(iter.m_ptr, iter.m_index) {};
+base::Iterator<T>::Iterator(const Iterator<T>& iter) : base::BaseIterator<T>(iter.m_ptr.lock(), iter.m_index) {};
 
 template <typename T>
 base::Iterator<T>::~Iterator() {
@@ -100,7 +100,7 @@ base::Iterator<T>::~Iterator() {
 
 template <typename T>
 T* base::Iterator<T>::get_ptr() {
-	return this->m_ptr.get() + this->m_index;
+	return this->m_ptr.lock().get() + this->m_index;
 }
 
 template <typename T>

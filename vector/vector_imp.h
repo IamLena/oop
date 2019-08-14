@@ -18,7 +18,7 @@ Vector<T>::Vector(size_t size, const T* arr) {
 	this->m_size = size;
 	m_ptr = std::shared_ptr<T>((T*)malloc(size * sizeof(T)), free);
 
-	for (int i = 0; i < size; i++) {
+	for (size_t i = 0; i < size; i++) {
 		m_ptr.get()[i] = arr[i];
 	}
 }
@@ -28,7 +28,7 @@ Vector<T>::Vector(const std::vector<T> & v) {
 	size_t size = v.size();
 	this->m_size = size;
 	m_ptr = std::shared_ptr<T>((T*)malloc(size * sizeof(T)), free);
-	for (int i = 0; i < size; i++) {
+	for (size_t i = 0; i < size; i++) {
 		m_ptr.get()[i] = v[i];
 	}
 }
@@ -99,4 +99,25 @@ Vector<T>& Vector<T>::operator = (const std::vector<T> v) {
 		m_ptr.get()[i] = v[i];
 	}
 	return *this;
+}
+
+template <typename T>
+base::Iterator<T> Vector<T>::begin() {
+	base::Iterator<T> iter(this->m_ptr);
+	return iter;
+}
+template <typename T>
+base::Iterator<T> Vector<T>::end() {
+	base::Iterator<T> iter(this->m_ptr, this->m_size);
+	return iter;
+}
+template <typename T>
+base::Iterator<T> Vector<T>::begin() const {
+	base::Iterator<T> iter(this->m_ptr);
+	return iter;
+}
+template <typename T>
+base::Iterator<T> Vector<T>::end() const {
+	base::Iterator<T> iter(this->m_ptr, this->m_size);
+	return iter;
 }

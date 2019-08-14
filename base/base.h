@@ -5,7 +5,7 @@
 namespace base {
 	class BaseContainer {
 	protected:
-		size_t m_count;
+		size_t m_size;
 		void set_size(int size);
 	public:
 		BaseContainer();

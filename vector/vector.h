@@ -25,10 +25,10 @@ public:
 
 	~Vector();
 
-	/*base::Iterator<T> begin();
+	base::Iterator<T> begin();
 	base::Iterator<T> end();
-	base::ConstIterator<T> begin() const;
-	base::ConstIterator<T> end() const;*/
+	base::Iterator<T> begin() const;
+	base::Iterator<T> end() const;
 
 	/*
 	scalar_product
