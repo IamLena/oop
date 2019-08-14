@@ -77,30 +77,14 @@ base::BaseIterator<T> base::BaseIterator<T>::operator - (int num) const {
 	return ret;
 }
 
-/*template <typename T>
+template <typename T>
 bool base::BaseIterator<T>::operator == (const BaseIterator<T>& iter) const {
-	return this.get_value() == iter.get_value();
+	return this.m_ptr  == iter.m_ptr && this.m_index == iter.m_index;
 }
 template <typename T>
 bool base::BaseIterator<T>::operator != (const BaseIterator<T>& iter) const {
-	return this->get_value() != iter.get_value();
+	return this.m_ptr != iter.m_ptr || this.m_index != iter.m_index;
 }
-template <typename T>
-bool base::BaseIterator<T>::operator < (const BaseIterator<T>& iter) const {
-	return this->get_value() < iter.get_value();
-}
-template <typename T>
-bool base::BaseIterator<T>::operator > (const BaseIterator<T>& iter) const {
-	return this->get_value() > iter.get_value();
-}
-template <typename T>
-bool base::BaseIterator<T>::operator >= (const BaseIterator<T>& iter) const {
-	return this->get_value() >= iter.get_value();
-}
-template <typename T>
-bool base::BaseIterator<T>::operator <= (const BaseIterator<T>& iter) const {
-	return this->get_value() <= iter.get_value();
-}*/
 
 //--------------------------------Iterator---------------------------------------
 template <typename T>

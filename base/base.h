@@ -37,12 +37,8 @@ namespace base {
 		BaseIterator<T> operator +  (int i) const;
 		BaseIterator<T> operator - (int i) const;
 
-		/*bool operator == (const BaseIterator<T>& iter) const;
+		bool operator == (const BaseIterator<T>& iter) const;
 		bool operator != (const BaseIterator<T>& iter) const;
-		bool operator < (const BaseIterator<T>& iter) const;
-		bool operator > (const BaseIterator<T>& iter) const;
-		bool operator <= (const BaseIterator<T>& iter) const;
-		bool operator >= (const BaseIterator<T>& iter) const;*/
 	};
 
 	template <typename T>
