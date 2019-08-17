@@ -30,14 +30,43 @@ public:
 	base::Iterator<T> begin() const;
 	base::Iterator<T> end() const;
 
-	/*
-	scalar_product
-	vector_product
-	coleniar
-	normal
-	angle
-	add + +=
-	minus - -=
-	koef * *=
+	T scalar_product(const Vector<T>& v) const;
+	/*Vector<T> vector_product(const Vector<T>& v) const;
+	bool is_coleniar(const Vector<T>& v) const;
+	bool is_normal(const Vector<T>& v) const;
+	int angle(const Vector<T>& v) const;
+	[]	
 	*/
+
+	bool operator == (const Vector<T>& v) {
+		if (this->get_size() != v.get_size()) {
+			return false;
+		}
+		auto iter = this->begin();
+		for (auto el = v.begin(); el != v.end(); el++) {
+			if (el.get_value() != iter.get_value()) {
+				return false;
+				iter++;
+			}
+		}
+		return true;
+	}
+
+	bool operator != (const Vector<T>& v) {
+		return !(*this == v);
+	}
+
+	//same and zero size exception
+	Vector<T> operator +(const Vector<T>& v) const;
+	Vector<T>& add (const Vector<T>& v);
+	Vector<T>& operator += (const Vector<T> & v);
+
+	Vector<T> operator -(const Vector<T>& v) const;
+	Vector<T>& sub(const Vector<T>& v);
+	Vector<T>& operator -= (const Vector<T> & v);
+
+	Vector<T> operator * (T k) const;
+	Vector<T>& operator *= (T k);
+	Vector<T> operator / (T k) const;
+	Vector<T>& operator /= (T k);
 };

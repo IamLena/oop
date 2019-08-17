@@ -121,3 +121,112 @@ base::Iterator<T> Vector<T>::end() const {
 	base::Iterator<T> iter(this->m_ptr, this->m_size);
 	return iter;
 }
+
+template <typename T>
+Vector<T> Vector<T>::operator +(const Vector<T>& v) const {
+	Vector<T> result(v.get_size());
+	auto v_iter = v.begin();
+	auto this_iter = this->begin();
+	for (auto r = result.begin(); r != result.end(); r++) {
+		*(r.get_ptr()) = v_iter.get_value() + this_iter.get_value();
+		this_iter++;
+		v_iter++;
+	}
+	return result;
+}
+template <typename T>
+Vector<T>& Vector<T>::add(const Vector<T>& v) {
+	auto this_iter = this->begin();
+	for (auto r = v.begin(); r != v.end(); r++) {
+		*(this_iter.get_ptr()) += r.get_value();
+		this_iter++;
+	}
+	return *this;
+}
+template <typename T>
+Vector<T>& Vector<T>::operator += (const Vector<T>& v) {
+	auto this_iter = this->begin();
+	for (auto r = v.begin(); r != v.end(); r++) {
+		*(this_iter.get_ptr()) += r.get_value();
+		this_iter++;
+	}
+	return *this;
+}
+
+template <typename T>
+Vector<T> Vector<T>::operator - (const Vector<T>& v) const {
+	Vector<T> result(v.get_size());
+	auto v_iter = v.begin();
+	auto this_iter = this->begin();
+	for (auto r = result.begin(); r != result.end(); r++) {
+		*(r.get_ptr()) = v_iter.get_value() - this_iter.get_value();
+		this_iter++;
+		v_iter++;
+	}
+	return result;
+}
+template <typename T>
+Vector<T>& Vector<T>::sub(const Vector<T>& v) {
+	auto this_iter = this->begin();
+	for (auto r = v.begin(); r != v.end(); r++) {
+		*(this_iter.get_ptr()) -= r.get_value();
+		this_iter++;
+	}
+	return *this;
+}
+template <typename T>
+Vector<T>& Vector<T>::operator -= (const Vector<T>& v) {
+	auto this_iter = this->begin();
+	for (auto r = v.begin(); r != v.end(); r++) {
+		*(this_iter.get_ptr()) -= r.get_value();
+		this_iter++;
+	}
+	return *this;
+}
+
+template <typename T>
+Vector<T> Vector<T>::operator * (T k) const {
+	Vector<T> result(this->get_size());
+	auto this_iter = this->begin();
+	for (auto r = result.begin(); r != result.end(); r++) {
+		*(r.get_ptr()) = this_iter.get_value() * k;
+		this_iter++;
+	}
+	return result;
+}
+template <typename T>
+Vector<T>& Vector<T>::operator *= (T k) {
+	for (auto r = this->begin(); r != this->end(); r++) {
+		*(r.get_ptr()) *= k;
+	}
+	return *this;
+}
+template <typename T>
+Vector<T> Vector<T>::operator / (T k) const {
+	Vector<T> result(this->get_size());
+	auto this_iter = this->begin();
+	for (auto r = result.begin(); r != result.end(); r++) {
+		*(r.get_ptr()) = this_iter.get_value() / k;
+		this_iter++;
+	}
+	return result;
+}
+template <typename T>
+Vector<T>& Vector<T>::operator /= (T k) {
+	for (auto r = this->begin(); r != this->end(); r++) {
+		*(r.get_ptr()) /= k;
+	}
+	return *this;
+}
+
+template <typename T>
+T Vector<T>::scalar_product(const Vector<T>& v) const {
+	T result = 0; //how?
+	auto v_iter = v.begin();
+	for (auto r = this->begin(); r != this->end(); r++) {
+		result += (r.get_value() * v_iter.get_value());
+		v_iter++;
+	}
+	return result;
+}
+
