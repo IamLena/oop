@@ -30,13 +30,21 @@ public:
 	base::Iterator<T> begin() const;
 	base::Iterator<T> end() const;
 
+	T length() {
+		T len = 0;
+		return len;
+	}
+
 	T scalar_product(const Vector<T>& v) const;
 	/*Vector<T> vector_product(const Vector<T>& v) const;
 	bool is_coleniar(const Vector<T>& v) const;
-	bool is_normal(const Vector<T>& v) const;
+	
 	int angle(const Vector<T>& v) const;
-	[]	
+	[]
 	*/
+	bool is_normal(const Vector<T>& v) const {
+		return this->set_size(v) == 0;
+	}
 
 	bool operator == (const Vector<T>& v) {
 		if (this->get_size() != v.get_size()) {

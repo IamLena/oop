@@ -159,7 +159,7 @@ Vector<T> Vector<T>::operator - (const Vector<T>& v) const {
 	auto v_iter = v.begin();
 	auto this_iter = this->begin();
 	for (auto r = result.begin(); r != result.end(); r++) {
-		*(r.get_ptr()) = v_iter.get_value() - this_iter.get_value();
+		*(r.get_ptr()) = this_iter.get_value() - v_iter.get_value();
 		this_iter++;
 		v_iter++;
 	}
