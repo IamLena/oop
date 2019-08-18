@@ -27,8 +27,8 @@ public:
 
 	base::Iterator<T> begin();
 	base::Iterator<T> end();
-	base::Iterator<T> begin() const;
-	base::Iterator<T> end() const;
+	base::ConstIterator<T> begin() const;
+	base::ConstIterator<T> end() const;
 
 	T length() {
 		T len = 0;
