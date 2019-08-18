@@ -86,7 +86,11 @@ Vector<T>::~Vector() {};
 template <typename T>
 Vector<T>& Vector<T>::operator = (const Vector<T>& another) {
 	if (this->get_size() != another.get_size()) {
-		throw error::SizeDismatch();
+		//throw error::SizeDismatch();
+		m_ptr = std::shared_ptr<T>((T*)malloc(another.get_size() * sizeof(T)), free);
+		if (m_ptr.get() == nullptr) {
+			throw error::MemmoryError();
+		}
 	}
 	for (int i = 0; i < get_size(); i++) {
 		m_ptr.get()[i] = another.m_ptr.get()[i];
@@ -104,7 +108,11 @@ Vector<T>& Vector<T>::operator = (Vector<T>&& another) {
 template <typename T>
 Vector<T>& Vector<T>::operator = (std::initializer_list<T> list) {
 	if (this->get_size() != list.size()) {
-		throw error::SizeDismatch();
+		//throw error::SizeDismatch();
+		m_ptr = std::shared_ptr<T>((T*)malloc(list.size() * sizeof(T)), free);
+		if (m_ptr.get() == nullptr) {
+			throw error::MemmoryError();
+		}
 	}
 
 	this->m_size = list.size();
@@ -118,7 +126,11 @@ Vector<T>& Vector<T>::operator = (std::initializer_list<T> list) {
 template <typename T>
 Vector<T>& Vector<T>::operator = (const std::vector<T> v) {
 	if (this->get_size() != v.size()) {
-		throw error::SizeDismatch();
+		//throw error::SizeDismatch();
+		m_ptr = std::shared_ptr<T>((T*)malloc(v.size() * sizeof(T)), free);
+		if (m_ptr.get() == nullptr) {
+			throw error::MemmoryError();
+		}
 	}
 
 	int size = v.size();
@@ -152,6 +164,9 @@ base::ConstIterator<T> Vector<T>::end() const {
 
 template <typename T>
 Vector<T> Vector<T>::operator +(const Vector<T>& v) const {
+	if (this->get_size() != v.get_size()) {
+		throw error::SizeDismatch();
+	}
 	Vector<T> result(v.get_size());
 	auto v_iter = v.begin();
 	auto this_iter = this->begin();
@@ -164,6 +179,9 @@ Vector<T> Vector<T>::operator +(const Vector<T>& v) const {
 }
 template <typename T>
 Vector<T>& Vector<T>::add(const Vector<T>& v) {
+	if (this->get_size() != v.get_size()) {
+		throw error::SizeDismatch();
+	}
 	auto this_iter = this->begin();
 	for (auto r = v.begin(); r != v.end(); r++) {
 		*(this_iter.get_ptr()) += r.get_value();
@@ -173,6 +191,9 @@ Vector<T>& Vector<T>::add(const Vector<T>& v) {
 }
 template <typename T>
 Vector<T>& Vector<T>::operator += (const Vector<T>& v) {
+	if (this->get_size() != v.get_size()) {
+		throw error::SizeDismatch();
+	}
 	auto this_iter = this->begin();
 	for (auto r = v.begin(); r != v.end(); r++) {
 		*(this_iter.get_ptr()) += r.get_value();
@@ -183,6 +204,9 @@ Vector<T>& Vector<T>::operator += (const Vector<T>& v) {
 
 template <typename T>
 Vector<T> Vector<T>::operator - (const Vector<T>& v) const {
+	if (this->get_size() != v.get_size()) {
+		throw error::SizeDismatch();
+	}
 	Vector<T> result(v.get_size());
 	auto v_iter = v.begin();
 	auto this_iter = this->begin();
@@ -195,6 +219,9 @@ Vector<T> Vector<T>::operator - (const Vector<T>& v) const {
 }
 template <typename T>
 Vector<T>& Vector<T>::sub(const Vector<T>& v) {
+	if (this->get_size() != v.get_size()) {
+		throw error::SizeDismatch();
+	}
 	auto this_iter = this->begin();
 	for (auto r = v.begin(); r != v.end(); r++) {
 		*(this_iter.get_ptr()) -= r.get_value();
@@ -204,6 +231,9 @@ Vector<T>& Vector<T>::sub(const Vector<T>& v) {
 }
 template <typename T>
 Vector<T>& Vector<T>::operator -= (const Vector<T>& v) {
+	if (this->get_size() != v.get_size()) {
+		throw error::SizeDismatch();
+	}
 	auto this_iter = this->begin();
 	for (auto r = v.begin(); r != v.end(); r++) {
 		*(this_iter.get_ptr()) -= r.get_value();
@@ -258,3 +288,82 @@ T Vector<T>::scalar_product(const Vector<T>& v) const {
 	return result;
 }
 
+template <typename T>
+T Vector<T>::operator[] (size_t i) {
+	if (i >= this->get_size()) {
+		throw error::IndexError();
+	}
+	return this->m_ptr.get()[i];
+}
+
+template <typename T>
+const T Vector<T>::operator[] (size_t i) const {
+	if (i >= this->get_size()) {
+		throw error::IndexError();
+	}
+	return this->m_ptr.get()[i];
+}
+
+template <typename T>
+Vector<T>& Vector<T>::normalize() {
+	T len = this->length();
+	for (int i = 0; i < this->get_size(); i++) {
+		this->m_ptr.get()[i] /= len;
+	}
+	return *this;
+}
+
+template <typename T>
+Vector<T> Vector<T>::norm() const {
+	Vector<T> result = *this;
+	T len = this->length();
+	result.normalize();
+	return result;
+}
+
+template <typename T>
+bool Vector<T>::is_coleniar(const Vector<T>& v) const {
+	return (this->angle(v) % 180 == 0);
+}
+
+template <typename T>
+T Vector<T>::angle(const Vector<T>& v) const {
+	return acos(this->scalar_product(v) / this->length() / v.length());
+}
+
+template <typename T>
+bool Vector<T>::is_normal(const Vector<T>& v) const {
+	return (this->scalar_product(v) == 0);
+}
+
+template <typename T>
+bool Vector<T>::operator == (const Vector<T>& v) {
+	if (this->get_size() != v.get_size()) {
+		return false;
+	}
+	auto iter = this->begin();
+	for (auto el = v.begin(); el != v.end(); el++) {
+		if (el.get_value() != iter.get_value()) {
+			return false;
+			iter++;
+		}
+	}
+	return true;
+}
+
+template <typename T>
+bool Vector<T>::operator != (const Vector<T>& v) {
+	return !(*this == v);
+}
+
+template <typename T>
+Vector<T> Vector<T>::vector_product(const Vector<T>& v) const {
+	if (this->get_size() != v.get_size() || this->get_size() != 3) {
+		throw error::TooMuchDimentions();
+	}
+	Vector<T> result(3);
+	result.m_ptr.get()[0] = (*this)[1] * v[2] - v[1] * (*this)[2];
+	result.m_ptr.get()[1] = -(*this)[0] * v[2] + v[0] * (*this)[2];
+	result.m_ptr.get()[2] = (*this)[0] * v[1] - v[0] * (*this)[1];
+	return result;
+}

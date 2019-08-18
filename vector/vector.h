@@ -4,6 +4,7 @@
 #include <initializer_list>
 #include <vector>
 #include <memory>
+#include <cmath>
 
 template <typename  T>
 class Vector : public base::BaseContainer{
@@ -30,41 +31,26 @@ public:
 	base::ConstIterator<T> begin() const;
 	base::ConstIterator<T> end() const;
 
-	T length() {
+	T length() const{
 		T len = 0;
-		return len;
+		for (size_t i = 0; i < this->get_size(); i++) {
+			len += this->m_ptr.get()[i] * this->m_ptr.get()[i];
+		}
+		return sqrt(len);
 	}
 
+	Vector<T> vector_product(const Vector<T>& v) const;
 	T scalar_product(const Vector<T>& v) const;
-	/*Vector<T> vector_product(const Vector<T>& v) const;
+	T operator[] (size_t i);
+	const T operator[] (size_t i) const;
+	Vector<T>& normalize();
+	Vector<T> norm() const;
 	bool is_coleniar(const Vector<T>& v) const;
-	
-	int angle(const Vector<T>& v) const;
-	[]
-	*/
-	bool is_normal(const Vector<T>& v) const {
-		return this->set_size(v) == 0;
-	}
+	T angle(const Vector<T>& v) const;
+	bool is_normal(const Vector<T>& v) const;
+	bool operator == (const Vector<T>& v);
+	bool operator != (const Vector<T>& v);
 
-	bool operator == (const Vector<T>& v) {
-		if (this->get_size() != v.get_size()) {
-			return false;
-		}
-		auto iter = this->begin();
-		for (auto el = v.begin(); el != v.end(); el++) {
-			if (el.get_value() != iter.get_value()) {
-				return false;
-				iter++;
-			}
-		}
-		return true;
-	}
-
-	bool operator != (const Vector<T>& v) {
-		return !(*this == v);
-	}
-
-	//same and zero size exception
 	Vector<T> operator +(const Vector<T>& v) const;
 	Vector<T>& add (const Vector<T>& v);
 	Vector<T>& operator += (const Vector<T> & v);
@@ -77,4 +63,12 @@ public:
 	Vector<T>& operator *= (T k);
 	Vector<T> operator / (T k) const;
 	Vector<T>& operator /= (T k);
+
+	friend std::ostream& operator << (std::ostream& out, const Vector<T> v) {
+		for (auto el = v.begin(); el != v.end(); el++) {
+			out << el.get_value() << ", ";
+		}
+		out << "\n";
+		return out;
+	}
 };
