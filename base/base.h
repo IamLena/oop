@@ -46,7 +46,6 @@ namespace base {
 	public:
 		Iterator(std::shared_ptr<T> ptr, size_t index = 0);
 		Iterator(const Iterator<T>& iter);
-		~Iterator();
 
 		T* get_ptr();
 		const T* get_ptr() const;
@@ -56,9 +55,9 @@ namespace base {
 
 	template <typename T>
 	class ConstIterator : public BaseIterator<T> {
+	public:
 		ConstIterator(std::shared_ptr<T> ptr, size_t index = 0);
 		ConstIterator(const ConstIterator<T>& iter);
-		~ConstIterator();
 
 		const T* get_ptr() const;
 		const T get_value() const;

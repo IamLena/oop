@@ -42,4 +42,9 @@ namespace error {
 			return "Too_Much_Dimentions";
 		}
 	};
+	class ExpiredWeakPtr : public std::exception {
+		virtual const char* what() const throw() {
+			return "Expired_Weak_Ptr";
+		}
+	};
 }
